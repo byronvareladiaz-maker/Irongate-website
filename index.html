@@ -1,31 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>IronGate Industries</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Rectangle</title>
   <style>
-    body {
+    /* Reset default margins */
+    body, html {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0f19;
-      color: white;
-      text-align: center;
+      padding: 0;
     }
-    h1 {
-      margin-top: 80px;
-      font-size: 48px;
-    }
-    p {
-      font-size: 20px;
-      opacity: 0.8;
+
+    /* Top rectangle styling */
+    .top-bar {
+      width: 100%;         /* Full width of the screen */
+      height: 80px;        /* Fixed height */
+      background-color: #1a1a1a;  /* Dark gray color (change as needed) */
+      position: fixed;     /* Stays at the top even when scrolling */
+      top: 0;              /* Align to top of page */
+      left: 0;             /* Align to left edge */
+      z-index: 1000;       /* Make sure it’s above other content */
     }
   </style>
 </head>
 <body>
 
-<h1>IronGate Industries</h1>
-<p>Next-Generation Defense Engineering</p>
+  <!-- Top rectangle -->
+  <div class="top-bar"></div>
+
+  <!-- Page content below -->
+  <div style="margin-top: 100px; padding: 20px;">
+    <h1>Page Content</h1>
+    <p>This is an example page with a top rectangle bar.</p>
+  </div>
 
 </body>
 </html>
-
