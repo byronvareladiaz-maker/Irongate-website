@@ -1,12 +1,14 @@
+/* Top black banner */
 .top-banner {
-  background-color: black;
-  height: 80px;
+  background-color: black;   /* Banner color */
+  height: 80px;              /* Banner height */
   width: 100%;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
+  display: flex;             /* Flex to align items */
+  align-items: center;       /* Vertically center logo */
+  padding-left: 20px;        /* Space from left edge */
 }
 
+/* Logo styling */
 .logo {
-  height: 50px;
+  height: 50px;              /* Adjust height of logo */
 }
