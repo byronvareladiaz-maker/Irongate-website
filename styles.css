@@ -1,0 +1,12 @@
+.top-banner {
+  background-color: black;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.logo {
+  height: 50px;
+}
