@@ -1,0 +1,112 @@
+export default function Home() {
+  return (
+    <div className="min-w-screen min-h-screen">
+      <div className="bg-[#000] w-[1280px] h-[1200px] absolute left-16 top-[100px]">
+        <div className="bg-linear-[0deg,#0000%,#000100%),#00] w-[1308px] h-[1238px] absolute left-0 -top-1">
+          <div className="w-[1308px] h-[541px] absolute left-0 top-0"></div>
+          <img
+            src="/MacosCodeEditorScreenshot1.png"
+            className="rounded-[25px] w-[1275px] h-[525px] absolute left-[9px] top-[674px] max-w-none"
+            alt="macOS Code Editor Screenshot 1"
+          />
+        </div>
+        <div className="w-[151px] h-[51px] absolute left-[9px] top-[25px]">
+          <img
+            src="/4b81e99c953d4e4f8fb34dd45ff89a4311.png"
+            className="w-[151px] h-[50px] absolute left-0 top-0 max-w-none"
+            alt="4B81E99C-953D-4E4F-8FB3-4DD45FF89A43 (1) 1"
+          />
+        </div>
+        <div className="w-[101px] h-[22px] absolute left-[337px] top-[54px]">
+          <p className="text-[#FFF] font-inter text-xs w-[101px] h-[22px] absolute left-0 top-0">
+            Our Work
+          </p>
+          <svg
+            width="8"
+            height="5"
+            viewBox="0 0 8 5"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-px absolute left-[58px] top-2.5 "
+          >
+            <path
+              d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+        <div className="w-[101px] h-[23px] absolute left-[438px] top-[54px]">
+          <p className="text-[#FFF] font-inter text-xs w-[101px] h-[22px] absolute left-0 top-0">
+            Updates
+          </p>
+          <svg
+            width="8"
+            height="5"
+            viewBox="0 0 8 5"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-px absolute left-[54px] top-[11px] "
+          >
+            <path
+              d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+        <div className="w-[101px] h-[22px] absolute left-[236px] top-[54px]">
+          <p className="text-[#FFF] font-inter text-xs w-[101px] h-[22px] absolute left-0 top-0">
+            About us
+          </p>
+          <svg
+            width="8"
+            height="5"
+            viewBox="0 0 8 5"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-px h-[3px] absolute left-[57px] top-[11px] "
+          >
+            <path
+              d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+        <div className="w-[101px] h-[23px] absolute left-[539px] top-[54px]">
+          <p className="text-[#FFF] font-inter text-xs w-[101px] h-[22px] absolute left-0 top-0">
+            Software
+          </p>
+        </div>
+        <p className="text-[#FFF] font-jejuGothic text-7xl w-[1141px] h-[205px] absolute left-[68px] top-[145px]">
+          Designing simplified, flight-critical hardware built to move from
+          concept to test stand in months—not decades.
+        </p>
+        <div className="w-[263px] h-[91px] absolute left-[23px] top-[491px]">
+          <div className="rounded-[12.5px] bg-[rgba(105,105,105,0.41)] w-[179px] h-[91px] absolute left-[43px] top-0"></div>
+          <p className="flex flex-col justify-center text-[#FFF] font-jejuGothic text-[25px] w-[263px] h-[55px] absolute left-0 top-1.5 text-center">
+            Learn More
+          </p>
+        </div>
+        <div className="w-[115px] h-[53px] absolute left-[1066px] top-[38px]">
+          <img
+            src="/Screenshot202611201908161.png"
+            className="w-[43px] h-10 absolute left-[75px] top-0 max-w-none"
+            alt="Screenshot 2026-11-20 190816 1"
+          />
+          <p className="text-[#FFF] font-inter text-xs w-[101px] h-[22px] absolute left-0 top-[15px]">
+            Payload Bay
+          </p>
+        </div>
+        <div className="w-[101px] h-[23px] absolute left-[1194px] top-[53px]">
+          <p className="text-[#FFF] font-inter text-[15px] w-[101px] h-[22px] absolute left-0 top-0">
+            Sign In
+          </p>
+        </div>
+        <img
+          src="/Image1.png"
+          className="w-5 h-[19px] absolute left-[1036px] top-[52px] max-w-none"
+          alt="image 1"
+        />
+      </div>
+    </div>
+  );
+}
