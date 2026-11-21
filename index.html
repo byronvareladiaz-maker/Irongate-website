@@ -1,16 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Irongate Industries</title>
+
+  <link rel="preconnect" href="https://googleapis.com" />
+  <link rel="preconnect" href="https://gstatic.com" crossorigin />
+  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      min-width: 100vw;
+      min-height: 100vh;
+      overflow-x: auto;
+      font-family: 'Inter', sans-serif;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .canvas {
+      background-color: #000000;
+      width: 1280px;
+      height: 1200px;
+      position: relative;
+      margin: 40px auto 0 auto;
+    }
+
+    .bg-layer {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
+      width: 1308px;
+      height: 1238px;
+      position: absolute;
+      left: 0;
+      top: -4px;
+      pointer-events: none;
+    }
+
+    .hero-screenshot {
+      border-radius: 25px;
+      width: 1275px;
+      height: 525px;
+      position: absolute;
+      left: 9px;
+      top: 674px;
+      object-fit: cover;
+    }
+
+    .logo-wrap {
+      display: block;
+      width: 151px;
+      height: 51px;
+      position: absolute;
+      left: 9px;
+      top: 25px;
+      cursor: pointer;
+    }
+
+    .logo-img {
+      width: 151px;
+      height: 50px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .nav-item {
+      display: block;
+      position: absolute;
+      top: 54px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .nav-text {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .nav-arrow {
+      width: 8px;
+      height: 5px;
+      position: absolute;
+      top: 6px;
+    }
+
+    .headline {
+      color: #ffffff;
+      font-family: 'Jeju Gothic', 'Inter', sans-serif;
+      font-size: 72px;
+      line-height: 1.15;
+      width: 1141px;
+      position: absolute;
+      left: 68px;
+      top: 145px;
+    }
+
+    .cta-wrap {
+      display: block;
+      width: 263px;
+      height: 91px;
+      position: absolute;
+      left: 23px;
+      top: 491px;
+      cursor: pointer;
+    }
+
+    .cta-btn {
+      border-radius: 12.5px;
+      background-color: rgba(105, 105, 105, 0.41);
+      width: 179px;
+      height: 91px;
+      position: absolute;
+      left: 43px;
+      top: 0;
+      transition: background-color 0.2s ease;
+    }
+
+    .cta-wrap:hover .cta-btn {
+      background-color: rgba(135, 135, 135, 0.55);
+    }
+
+    .cta-text {
+      color: #ffffff;
+      font-family: 'Jeju Gothic', 'Inter', sans-serif;
+      font-size: 25px;
+      width: 263px;
+      height: 55px;
+      position: absolute;
+      left: 0;
+      top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .payload-wrap {
+      display: block;
+      width: 115px;
+      height: 53px;
+      position: absolute;
+      left: 1066px;
+      top: 38px;
+      cursor: pointer;
+    }
+
+    .payload-img {
+      width: 43px;
+      height: 40px;
+      position: absolute;
+      left: 75px;
+      top: 0;
+    }
+
+    .payload-text {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      position: absolute;
+      left: 0;
+      top: 15px;
+    }
+
+    .signin-wrap {
+      width: 101px;
+      height: 23px;
+      position: absolute;
+      left: 1194px;
+      top: 53px;
+      cursor: pointer;
+    }
+
+    .signin-text {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+    }
+
+    .top-icon {
+      width: 20px;
+      height: 19px;
+      position: absolute;
+      left: 1036px;
+      top: 52px;
+    }
+  </style>
 </head>
 <body>
+<div class="canvas">
+  <div class="bg-layer">
+    <img
+            src="./public/MacosCodeEditorScreenshot1.png"
+            class="hero-screenshot"
+            alt="macOS Code Editor Screenshot 1"
+    />
+  </div>
 
-  <header class="top-banner">
-    <img src="assets/logo.png.PNG" alt="Logo" class="logo">
-  </header>
+  <!-- Logo -> https://irongateindustries.com -->
+  <a href="https://irongateindustries.com" class="logo-wrap">
+    <img
+            src="./public/4b81e99c953d4e4f8fb34dd45ff89a4311.png"
+            class="logo-img"
+            alt="Irongate Logo"
+    />
+  </a>
 
+  <div class="nav-item" style="left: 236px; width: 101px;">
+    <p class="nav-text">About us</p>
+    <svg class="nav-arrow" style="left: 57px;" viewBox="0 0 8 5" fill="none" xmlns="http://w3.org">
+      <path d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z" fill="white" />
+    </svg>
+  </div>
+
+  <div class="nav-item" style="left: 337px; width: 101px;">
+    <p class="nav-text">Our Work</p>
+    <svg class="nav-arrow" style="left: 58px;" viewBox="0 0 8 5" fill="none" xmlns="http://w3.org">
+      <path d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z" fill="white" />
+    </svg>
+  </div>
+
+  <div class="nav-item" style="left: 438px; width: 101px;">
+    <p class="nav-text">Updates</p>
+    <svg class="nav-arrow" style="left: 54px;" viewBox="0 0 8 5" fill="none" xmlns="http://w3.org">
+      <path d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z" fill="white" />
+    </svg>
+  </div>
+
+  <!-- Software -> https://irongateindustries.com/software -->
+  <a href="https://irongateindustries.com/software" class="nav-item" style="left: 539px; width: 101px;">
+    <p class="nav-text">Software</p>
+  </a>
+
+  <p class="headline">
+    Designing simplified, flight-critical hardware built to move from
+    concept to test stand in months—not decades.
+  </p>
+
+  <!-- Learn More -> https://irongateindustries.com -->
+  <a href="https://irongateindustries.com/whatwedo" class="cta-wrap">
+    <div class="cta-btn"></div>
+    <p class="cta-text">Learn More</p>
+  </a>
+
+  <!-- Payload Bay -> https://irongateindustries.com -->
+  <a href="https://irongateindustries.com/payload" class="payload-wrap">
+    <img
+            src="./public/Screenshot202611201908161.png"
+            class="payload-img"
+            alt="Payload Bay Icon"
+    />
+    <p class="payload-text">Payload Bay</p>
+  </a>
+
+  <a href="https://irongateindustries.com/signin" class="signin-wrap" style="display: block;">
+    <p class="signin-text">Sign In</p>
+  </a>
+
+
+  <img
+          src="./public/Image1.png"
+          class="top-icon"
+          alt="Icon"
+  />
+</div>
 </body>
 </html>

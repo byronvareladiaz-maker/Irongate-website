@@ -1,6 +1,0 @@
-@import "tailwindcss";
-
-@theme inline {
-  --font-inter: var(--font-inter);
-  --font-jejuGothic: var(--font-jejugothic);
-}
