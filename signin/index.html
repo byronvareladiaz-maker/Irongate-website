@@ -637,13 +637,12 @@
 </main>
 
 <!-- Clerk JavaScript SDK -->
-<!-- 1. Static Clerk Scripts (Must be plain HTML tags so document.currentScript works) -->
-<!-- Use ONLY this single Clerk JS script tag -->
+<!-- Load Clerk Browser SDK directly from jsDelivr CDN -->
 <script
         defer
         crossorigin="anonymous"
         data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
-        src="https://irongateindustries.com"
+        src="https://jsdelivr.net"
         type="text/javascript">
 </script>
 
@@ -654,17 +653,18 @@
     if (!window.Clerk) {
       if (statusEl) {
         statusEl.classList.add('error');
-        statusEl.textContent = 'Clerk failed to load.';
+        statusEl.textContent = 'Clerk SDK blocked by browser/ad-blocker.';
       }
       return;
     }
 
     await window.Clerk.load();
 
-    // Now run your Irongate login modal & button handlers!
+    // Run your Irongate login modal & button handlers!
     await initIrongateAuth(window.Clerk);
   });
 </script>
+
 
 
 
