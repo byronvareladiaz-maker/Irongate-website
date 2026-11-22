@@ -4,12 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Irongate Industries</title>
-
-  <link rel="preconnect" href="https://googleapis.com" />
-  <link rel="preconnect" href="https://gstatic.com" crossorigin />
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet" />
-
   <style>
     * {
       box-sizing: border-box;
@@ -19,264 +13,287 @@
 
     body {
       background-color: #000000;
-      color: #ffffff;
-      min-width: 100vw;
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
-      overflow-x: auto;
-      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .canvas {
-      background-color: #000000;
-      width: 1280px;
-      height: 1200px;
+    /* --- Top Navigation Bar (Matches your Sign-In page) --- */
+    header {
       position: relative;
-      margin: 40px auto 0 auto;
-    }
-
-    .bg-layer {
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
-      width: 1308px;
-      height: 1238px;
-      position: absolute;
-      left: 0;
-      top: -4px;
-      pointer-events: none;
-    }
-
-    .hero-screenshot {
-      border-radius: 25px;
-      width: 1275px;
-      height: 525px;
-      position: absolute;
-      left: 9px;
-      top: 674px;
-      object-fit: cover;
-    }
-
-    .logo-wrap {
-      display: block;
-      width: 151px;
-      height: 51px;
-      position: absolute;
-      left: 9px;
-      top: 25px;
-      cursor: pointer;
-    }
-
-    .logo-img {
-      width: 151px;
-      height: 50px;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-
-    .nav-item {
-      display: block;
-      position: absolute;
-      top: 54px;
-      height: 22px;
-      cursor: pointer;
-    }
-
-    .nav-text {
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      line-height: 16px;
-    }
-
-    .nav-arrow {
-      width: 8px;
-      height: 5px;
-      position: absolute;
-      top: 6px;
-    }
-
-    .headline {
-      color: #ffffff;
-      font-family: 'Jeju Gothic', 'Inter', sans-serif;
-      font-size: 72px;
-      line-height: 1.15;
-      width: 1141px;
-      position: absolute;
-      left: 68px;
-      top: 145px;
-    }
-
-    .cta-wrap {
-      display: block;
-      width: 263px;
-      height: 91px;
-      position: absolute;
-      left: 23px;
-      top: 491px;
-      cursor: pointer;
-    }
-
-    .cta-btn {
-      border-radius: 12.5px;
-      background-color: rgba(105, 105, 105, 0.41);
-      width: 179px;
-      height: 91px;
-      position: absolute;
-      left: 43px;
-      top: 0;
-      transition: background-color 0.2s ease;
-    }
-
-    .cta-wrap:hover .cta-btn {
-      background-color: rgba(135, 135, 135, 0.55);
-    }
-
-    .cta-text {
-      color: #ffffff;
-      font-family: 'Jeju Gothic', 'Inter', sans-serif;
-      font-size: 25px;
-      width: 263px;
-      height: 55px;
-      position: absolute;
-      left: 0;
-      top: 18px;
+      z-index: 10;
       display: flex;
       align-items: center;
-      justify-content: center;
-      pointer-events: none;
+      justify-content: space-between;
+      padding: 20px 40px;
+      font-size: 14px;
     }
 
-    .payload-wrap {
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .logo img {
+      height: 36px;
+      width: auto;
       display: block;
-      width: 115px;
-      height: 53px;
-      position: absolute;
-      left: 1066px;
-      top: 38px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: #D1D1D1;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #FFFFFF;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-right a,
+    .icon-btn {
+      color: #D1D1D1;
+      text-decoration: none;
+      background: none;
+      border: none;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      transition: color 0.2s;
     }
 
-    .payload-img {
-      width: 43px;
-      height: 40px;
-      position: absolute;
-      left: 75px;
-      top: 0;
+    .nav-right a:hover,
+    .icon-btn:hover {
+      color: #FFFFFF;
     }
 
-    .payload-text {
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      position: absolute;
-      left: 0;
-      top: 15px;
+    /* --- Hero Section --- */
+    .hero {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 60px 80px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
     }
 
-    .signin-wrap {
-      width: 101px;
-      height: 23px;
-      position: absolute;
-      left: 1194px;
-      top: 53px;
-      cursor: pointer;
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
     }
 
-    .signin-text {
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
+    .hero-headline {
+      font-size: 46px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
     }
 
-    .top-icon {
-      width: 20px;
-      height: 19px;
-      position: absolute;
-      left: 1036px;
-      top: 52px;
+    .btn-learn-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background-color: #FFFFFF;
+      color: #000000;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 14px;
+      transition: transform 0.15s ease, background-color 0.2s ease;
+    }
+
+    .btn-learn-more:hover {
+      background-color: #E5E5E5;
+      transform: translateY(-1px);
+    }
+
+    /* Optional Right-Side Visual / Hardware Backdrop */
+    .hero-visual {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .hero-visual img {
+      max-width: 480px;
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      object-fit: contain;
+    }
+
+    /* Subtle Footer */
+    footer {
+      padding: 24px 40px;
+      border-top: 1px solid #1F1F1F;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #7A7A7A;
+    }
+
+    footer a {
+      color: #A0A0A0;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    footer a:hover {
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 960px) {
+      header {
+        padding: 16px 20px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        flex-direction: column;
+        padding: 40px 24px;
+        text-align: left;
+      }
+      .hero-headline {
+        font-size: 32px;
+      }
+      footer {
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
-<div class="canvas">
-  <div class="bg-layer">
-    <img
-            src="./public/MacosCodeEditorScreenshot1.png"
-            class="hero-screenshot"
-            alt="macOS Code Editor Screenshot 1"
-    />
+
+<!-- Top Navigation -->
+<header>
+  <div class="nav-left">
+    <a href="index.html" class="logo">
+      <!-- Replace "logo.png" with your actual logo filename -->
+      <img src="public/4b81e99c953d4e4f8fb34dd45ff89a4311.png" alt="Irongate Industries" />
+    </a>
+
+    <nav class="nav-links">
+      <a href="#about">About us <span>&#8964;</span></a>
+      <a href="#work">Our Work <span>&#8964;</span></a>
+      <a href="#updates">Updates <span>&#8964;</span></a>
+      <a href="#software">Software</a>
+    </nav>
   </div>
 
-  <!-- Logo -> https://irongateindustries.com -->
-  <a href="https://irongateindustries.com" class="logo-wrap">
-    <img
-            src="./public/4b81e99c953d4e4f8fb34dd45ff89a4311.png"
-            class="logo-img"
-            alt="Irongate Logo"
-    />
-  </a>
+  <div class="nav-right">
+    <button class="icon-btn" aria-label="Search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
 
-  <div class="nav-item" style="left: 236px; width: 101px;">
-    <p class="nav-text">About us</p>
-    <svg class="nav-arrow" style="left: 57px;" viewBox="0 0 8 5" fill="none" xmlns="http://w3.org">
-      <path d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z" fill="white" />
-    </svg>
+    <a href="payload-bay.html">
+      Payload Bay
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+      </svg>
+    </a>
+
+    <!-- Automatically swaps between "Sign In" and the Clerk User Profile button -->
+    <div id="auth-nav-slot">
+      <a href="signin/indexsignin.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+<!-- Main Hero Section -->
+<main class="hero">
+  <div class="hero-content">
+    <h1 class="hero-headline">
+      Designing simplified, flight-critical hardware built to move from concept to test stand in months—not decades.
+    </h1>
+
+    <a href="#about" class="btn-learn-more">
+      Learn More
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
   </div>
 
-  <div class="nav-item" style="left: 337px; width: 101px;">
-    <p class="nav-text">Our Work</p>
-    <svg class="nav-arrow" style="left: 58px;" viewBox="0 0 8 5" fill="none" xmlns="http://w3.org">
-      <path d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z" fill="white" />
-    </svg>
+  <!-- Optional Hero Hardware/Rocket Image (remove this div if your homepage is text-only) -->
+  <div class="hero-visual">
+    <img src="public/SSC-20211101-s00289~medium.png" alt="Flight-critical aerospace hardware" />
   </div>
+</main>
 
-  <div class="nav-item" style="left: 438px; width: 101px;">
-    <p class="nav-text">Updates</p>
-    <svg class="nav-arrow" style="left: 54px;" viewBox="0 0 8 5" fill="none" xmlns="http://w3.org">
-      <path d="M3.68198 3.68201H4.18198V2.68201H3.68198H3.18198V3.68201H3.68198ZM3.32842 4.03556C3.52369 4.23082 3.84027 4.23082 4.03553 4.03556L7.21751 0.85358C7.41277 0.658318 7.41277 0.341735 7.21751 0.146473C7.02225 -0.0487893 6.70567 -0.0487893 6.5104 0.146473L3.68198 2.9749L0.853549 0.146473C0.658287 -0.0487893 0.341705 -0.0487893 0.146442 0.146473C-0.0488198 0.341735 -0.0488198 0.658318 0.146442 0.85358L3.32842 4.03556Z" fill="white" />
-    </svg>
+<!-- Footer -->
+<footer>
+  <span>&copy; 2026 Irongate Industries. All rights reserved.</span>
+  <div>
+    <a href="terms.html">Terms of Service</a>
+    <a href="privacy.html">Privacy Policy</a>
   </div>
+</footer>
 
-  <!-- Software -> https://irongateindustries.com/software -->
-  <a href="https://irongateindustries.com/software" class="nav-item" style="left: 539px; width: 101px;">
-    <p class="nav-text">Software</p>
-  </a>
+<!-- Clerk JavaScript SDK (Production Keys for irongateindustries.com) -->
+<script
+        async
+        crossorigin="anonymous"
+        data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
+        src="https://irongateindustries.com"
+        type="text/javascript">
+</script>
 
-  <p class="headline">
-    Designing simplified, flight-critical hardware built to move from
-    concept to test stand in months—not decades.
-  </p>
+<script>
+  window.addEventListener('load', async function () {
+    if (!window.Clerk) return;
 
-  <!-- Learn More -> https://irongateindustries.com -->
-  <a href="https://irongateindustries.com/whatwedo" class="cta-wrap">
-    <div class="cta-btn"></div>
-    <p class="cta-text">Learn More</p>
-  </a>
+    await window.Clerk.load();
 
-  <!-- Payload Bay -> https://irongateindustries.com -->
-  <a href="https://irongateindustries.com/payload" class="payload-wrap">
-    <img
-            src="./public/Screenshot202611201908161.png"
-            class="payload-img"
-            alt="Payload Bay Icon"
-    />
-    <p class="payload-text">Payload Bay</p>
-  </a>
+    // If the user is signed in, replace "Sign In" in the top right with their profile avatar & Sign Out menu
+    if (window.Clerk.user) {
+      const navSlot = document.getElementById('auth-nav-slot');
+      navSlot.innerHTML = '<div id="user-button"></div>';
+      window.Clerk.mountUserButton(document.getElementById('user-button'));
+    }
+  });
+</script>
 
-  <a href="https://irongateindustries.com/signin" class="signin-wrap" style="display: block;">
-    <p class="signin-text">Sign In</p>
-  </a>
-
-
-  <img
-          src="./public/Image1.png"
-          class="top-icon"
-          alt="Icon"
-  />
-</div>
 </body>
 </html>
