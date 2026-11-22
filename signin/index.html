@@ -637,13 +637,33 @@
 </main>
 
 <!-- Clerk JavaScript SDK -->
-<script
-        async
-        crossorigin="anonymous"
-        data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
-        src="https://irongateindustries.com"
-        type="text/javascript">
+<script>
+  // Dynamically load Clerk JS and run your login setup the exact moment it finishes
+  (function loadClerkSDK() {
+    const script = document.createElement('script');
+    script.src = 'https://irongateindustries.com';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    script.setAttribute('data-clerk-publishable-key', 'pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ');
+
+    script.onload = async function () {
+      if (!window.Clerk) {
+        document.getElementById('auth-status').textContent = 'Script downloaded, but window.Clerk was undefined.';
+        return;
+      }
+      await initIrongateAuth();
+    };
+
+    script.onerror = function () {
+      const statusEl = document.getElementById('auth-status');
+      statusEl.classList.add('error');
+      statusEl.textContent = 'Browser blocked ://irongateindustries.com (check ad-blocker or DNS).';
+    };
+
+    document.head.appendChild(script);
+  })();
 </script>
+
 
 <!-- Complete Page Logic: Dropdown, Payload Bay Badge, Slide-Down Modal & Clerk Auth -->
 <script>
