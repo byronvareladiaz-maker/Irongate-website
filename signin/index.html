@@ -291,7 +291,7 @@
 <header>
   <div class="nav-left">
     <a href="/" class="logo">
-      <img src="/public/4b81e99c953d4e4f8fb34dd45ff89a4311.png" alt="Iron Gate Industries" />
+      <img src="4b81e99c953d4e4f8fb34dd45ff89a4311.png" alt="Iron Gate Industries" />
     </a>
 
     <nav class="nav-links">
@@ -329,7 +329,6 @@
       </svg>
     </a>
 
-    <!-- FIX: this wrapper was missing, so the user button had nowhere to mount -->
     <div id="auth-nav-slot">
       <a href="#email-input">Sign In</a>
     </div>
@@ -389,7 +388,7 @@
   </section>
 </main>
 
-<!-- FIX: this whole modal was missing from the page (only its CSS existed). -->
+<!-- Auth modal (all three steps) -->
 <div class="modal-backdrop" id="auth-modal-backdrop">
   <div class="auth-modal" role="dialog" aria-modal="true">
     <button type="button" class="modal-close" id="modal-close-btn" aria-label="Close">&times;</button>
@@ -422,6 +421,9 @@
       <h2 class="modal-title" id="welcome-back-title">Welcome back</h2>
       <p class="modal-subtitle" id="welcome-back-subtitle"></p>
       <form id="existing-password-form" class="modal-form">
+        <!-- Hidden username field so the browser knows which saved password to autofill -->
+        <input type="email" id="existing-username" autocomplete="username" tabindex="-1" aria-hidden="true"
+               style="position:absolute;opacity:0;height:0;width:0;pointer-events:none;" />
         <input type="password" id="existing-password-input" class="modal-input" placeholder="Password" autocomplete="current-password" required />
         <button type="submit" class="modal-submit">Sign in</button>
       </form>
@@ -431,10 +433,7 @@
   </div>
 </div>
 
-<!--
-  FIX: Clerk needs TWO scripts: the UI bundle AND clerk-js itself.
-  The page only had the UI bundle, so window.Clerk never existed.
--->
+<!-- Clerk needs TWO scripts: the UI bundle AND clerk-js itself -->
 <script
         defer
         crossorigin="anonymous"
@@ -449,7 +448,6 @@
         type="text/javascript">
 </script>
 
-<!-- FIX: one script block (the page had two copies of everything, so every handler fired twice) -->
 <script>
   (function () {
     const $ = (id) => document.getElementById(id);
@@ -591,8 +589,8 @@
           try {
             activeSignIn = await clerk.client.signIn.create({ identifier: email });
           } catch (err) {
-            // FIX: only treat "not found" as "new user". Any other error (rate limit,
-            // network, etc.) used to fall through to sign-up and show a confusing message.
+            // Only treat "not found" as "new user". Any other error (rate limit,
+            // network, etc.) is shown as an error instead of starting a sign-up.
             if (err && err.errors && err.errors[0] && err.errors[0].code === 'form_identifier_not_found') {
               existing = false;
             } else {
@@ -610,6 +608,7 @@
             $('welcome-back-title').textContent = first ? `Welcome back, ${first}` : 'Welcome back';
             $('welcome-back-subtitle').textContent = `Enter the password for ${email} to continue.`;
             $('existing-password-input').value = '';
+            $('existing-username').value = email;
             setStatus('');
             openStep('password');
             $('existing-password-input').focus();
@@ -698,6 +697,13 @@
           }
         });
       });
+
+      // ---- Opened from "Switch account": prefill the email and jump to the password step ----
+      const prefill = new URLSearchParams(window.location.search).get('email');
+      if (prefill) {
+        $('email-input').value = prefill;
+        $('email-form').requestSubmit();
+      }
     });
   })();
 </script>
