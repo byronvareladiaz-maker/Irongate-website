@@ -638,29 +638,51 @@
 
 <!-- Clerk JavaScript SDK -->
 <script>
-  // Dynamically load Clerk JS and run your login setup the exact moment it finishes
-  (function loadClerkSDK() {
-    const script = document.createElement('script');
-    script.src = 'https://irongateindustries.com';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    script.setAttribute('data-clerk-publishable-key', 'pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ');
+  function loadScript(src, attrs = {}) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
 
-    script.onload = async function () {
-      if (!window.Clerk) {
-        document.getElementById('auth-status').textContent = 'Script downloaded, but window.Clerk was undefined.';
-        return;
+  (async function startClerk() {
+    const statusEl = document.getElementById('auth-status');
+    const pubKey = 'pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ';
+
+    try {
+      // 1. Load Clerk UI bundle first (required for Clerk JS v6)
+      await loadScript('https://irongateindustries.com');
+
+      // 2. Load Clerk JS v6 bundle second
+      await loadScript('https://irongateindustries.com', {
+        'data-clerk-publishable-key': pubKey
+      });
+
+      // 3. Initialize Clerk (handles both auto-mounted window.Clerk and constructor form)
+      if (typeof window.Clerk === 'function') {
+        window.Clerk = new window.Clerk(pubKey);
       }
+
+      await window.Clerk.load({
+        ui: { ClerkUI: window.__internal_ClerkUICtor }
+      });
+
+      // 4. Run your Irongate login modal & button handlers!
       await initIrongateAuth();
-    };
 
-    script.onerror = function () {
-      const statusEl = document.getElementById('auth-status');
-      statusEl.classList.add('error');
-      statusEl.textContent = 'Browser blocked ://irongateindustries.com (check ad-blocker or DNS).';
-    };
-
-    document.head.appendChild(script);
+    } catch (err) {
+      if (statusEl) {
+        statusEl.classList.add('error');
+        statusEl.textContent = 'Clerk init error: ' + (err.message || err);
+      }
+      console.error(err);
+    }
   })();
 </script>
 
