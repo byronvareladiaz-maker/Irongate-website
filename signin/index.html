@@ -728,6 +728,13 @@
       }, 700);
     }
 
+    // Wait up to 5 seconds for the async Clerk SDK to attach to window.Clerk
+    let attempts = 0;
+    while (!window.Clerk && attempts < 50) {
+      await new Promise((r) => setTimeout(r, 100));
+      attempts++;
+    }
+
     if (!window.Clerk) {
       if (statusEl) {
         statusEl.textContent = 'Clerk failed to load. Check your connection or DNS settings.';
@@ -735,6 +742,9 @@
       }
       return;
     }
+
+    await window.Clerk.load();
+
 
     await window.Clerk.load();
 
