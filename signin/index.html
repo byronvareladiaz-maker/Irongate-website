@@ -651,22 +651,6 @@
   // Systems Dropdown Menu Toggle
   const systemsDropdown = document.getElementById('systems-dropdown');
 
-
-  if (systemsBtn && systemsDropdown) {
-    systemsBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = systemsDropdown.classList.toggle('open');
-      systemsBtn.setAttribute('aria-expanded', isOpen);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!systemsDropdown.contains(e.target)) {
-        systemsDropdown.classList.remove('open');
-        systemsBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
   // Live Payload Bay Counter
   function updatePayloadBadge() {
     try {
