@@ -63,6 +63,76 @@
       color: #FFFFFF;
     }
 
+    /* --- Dropdown Menu for "Systems" --- */
+    .nav-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-dropdown-btn {
+      background: none;
+      border: none;
+      color: #D1D1D1;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+
+    .nav-dropdown-btn:hover,
+    .nav-dropdown.open .nav-dropdown-btn {
+      color: #FFFFFF;
+    }
+
+    .nav-dropdown-btn .chevron {
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+
+    .nav-dropdown.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 0;
+      min-width: 170px;
+      background-color: #111111;
+      border: 1px solid #2E2E2E;
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-dropdown.open .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-menu a {
+      color: #D1D1D1;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: block;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #1F1F1F;
+      color: #FFFFFF;
+    }
+
+
     .nav-right {
       display: flex;
       align-items: center;
@@ -211,7 +281,17 @@
       <a href="#about">About us <span>&#8964;</span></a>
       <a href="#work">Our Work <span>&#8964;</span></a>
       <a href="#updates">Updates <span>&#8964;</span></a>
-      <a href="#software">Software</a>
+
+      <!-- Systems Dropdown -->
+      <div class="nav-dropdown" id="systems-dropdown">
+        <button type="button" class="nav-dropdown-btn" id="systems-btn" aria-expanded="false">
+          Systems <span class="chevron">&#8964;</span>
+        </button>
+        <div class="dropdown-menu">
+          <a href="/software">Software</a>
+          <a href="/hardware">Hardware</a>
+        </div>
+      </div>
     </nav>
   </div>
 
@@ -223,8 +303,8 @@
       </svg>
     </button>
 
-    <a href="payload-bay.html">
-      Payload Bay
+    <a href="/payload">
+      Payload Bay<span id="nav-bay-count"></span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
         <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
@@ -233,11 +313,33 @@
       </svg>
     </a>
 
+
     <!-- Automatically swaps between "Sign In" and the Clerk User Profile button -->
     <div id="auth-nav-slot">
       <a href="signin/index.html">Sign In</a>
     </div>
   </div>
+  <script>
+    function updatePayloadBadge() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('irongate_payload_bay')) || [];
+        const totalUnits = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+        const badge = document.getElementById('nav-bay-count');
+
+        if (badge) {
+          // Shows " (3)" only when there are items, or stays hidden when empty
+          badge.textContent = totalUnits > 0 ? ` (${totalUnits})` : '';
+        }
+      } catch (e) {
+        // Ignore storage errors
+      }
+    }
+
+    // Run immediately when the page opens, and also if the cart changes in another tab
+    updatePayloadBadge();
+    window.addEventListener('storage', updatePayloadBadge);
+  </script>
+
 </header>
 
 <!-- Main Hero Section -->
@@ -294,6 +396,28 @@
     }
   });
 </script>
+
+<script>
+  const systemsDropdown = document.getElementById('systems-dropdown');
+  const systemsBtn = document.getElementById('systems-btn');
+
+  if (systemsBtn && systemsDropdown) {
+    systemsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = systemsDropdown.classList.toggle('open');
+      systemsBtn.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close the dropdown when clicking anywhere else on the page
+    document.addEventListener('click', (e) => {
+      if (!systemsDropdown.contains(e.target)) {
+        systemsDropdown.classList.remove('open');
+        systemsBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>
+
 
 </body>
 </html>
