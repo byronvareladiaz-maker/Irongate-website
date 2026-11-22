@@ -637,54 +637,50 @@
 </main>
 
 <!-- Clerk JavaScript SDK -->
+<!-- 1. Static Clerk Scripts (Must be plain HTML tags so document.currentScript works) -->
+<script
+        defer
+        crossorigin="anonymous"
+        src="https://irongateindustries.com"
+        type="text/javascript">
+</script>
+
+<script
+        defer
+        crossorigin="anonymous"
+        data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
+        src="https://irongateindustries.com"
+        type="text/javascript">
+</script>
+
+<!-- 2. Your App Script (window 'load' ALWAYS waits for all 'defer' scripts to finish) -->
 <script>
-  function loadScript(src, attrs = {}) {
-    return new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = src;
-      s.async = true;
-      s.crossOrigin = 'anonymous';
-      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-
-  (async function startClerk() {
+  window.addEventListener('load', async function () {
     const statusEl = document.getElementById('auth-status');
-    const pubKey = 'pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ';
 
-    try {
-      // 1. Load Clerk UI bundle first (required for Clerk JS v6)
-      await loadScript('https://irongateindustries.com');
+    // Find the Clerk instance attached by the static script tag
+    const clerk = window.Clerk || window.__clerk;
 
-      // 2. Load Clerk JS v6 bundle second
-      await loadScript('https://irongateindustries.com', {
-        'data-clerk-publishable-key': pubKey
-      });
-
-      // 3. Initialize Clerk (handles both auto-mounted window.Clerk and constructor form)
-      if (typeof window.Clerk === 'function') {
-        window.Clerk = new window.Clerk(pubKey);
-      }
-
-      await window.Clerk.load({
-        ui: { ClerkUI: window.__internal_ClerkUICtor }
-      });
-
-      // 4. Run your Irongate login modal & button handlers!
-      await initIrongateAuth();
-
-    } catch (err) {
+    if (!clerk) {
       if (statusEl) {
         statusEl.classList.add('error');
-        statusEl.textContent = 'Clerk init error: ' + (err.message || err);
+        statusEl.textContent = 'Clerk global not found. Check browser console (F12) for script errors.';
       }
-      console.error(err);
+      return;
     }
-  })();
+
+    // If clerk is not yet loaded, call clerk.load()
+    if (!clerk.loaded) {
+      await clerk.load({
+        ui: { ClerkUI: window.__internal_ClerkUICtor }
+      });
+    }
+
+    // Now run your Irongate login modal & button handlers!
+    await initIrongateAuth(clerk);
+  });
 </script>
+
 
 
 <!-- Complete Page Logic: Dropdown, Payload Bay Badge, Slide-Down Modal & Clerk Auth -->
