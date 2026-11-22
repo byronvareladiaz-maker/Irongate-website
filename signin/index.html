@@ -638,13 +638,7 @@
 
 <!-- Clerk JavaScript SDK -->
 <!-- 1. Static Clerk Scripts (Must be plain HTML tags so document.currentScript works) -->
-<script
-        defer
-        crossorigin="anonymous"
-        src="https://irongateindustries.com"
-        type="text/javascript">
-</script>
-
+<!-- Use ONLY this single Clerk JS script tag -->
 <script
         defer
         crossorigin="anonymous"
@@ -653,33 +647,25 @@
         type="text/javascript">
 </script>
 
-<!-- 2. Your App Script (window 'load' ALWAYS waits for all 'defer' scripts to finish) -->
 <script>
   window.addEventListener('load', async function () {
     const statusEl = document.getElementById('auth-status');
 
-    // Find the Clerk instance attached by the static script tag
-    const clerk = window.Clerk || window.__clerk;
-
-    if (!clerk) {
+    if (!window.Clerk) {
       if (statusEl) {
         statusEl.classList.add('error');
-        statusEl.textContent = 'Clerk global not found. Check browser console (F12) for script errors.';
+        statusEl.textContent = 'Clerk failed to load.';
       }
       return;
     }
 
-    // If clerk is not yet loaded, call clerk.load()
-    if (!clerk.loaded) {
-      await clerk.load({
-        ui: { ClerkUI: window.__internal_ClerkUICtor }
-      });
-    }
+    await window.Clerk.load();
 
     // Now run your Irongate login modal & button handlers!
-    await initIrongateAuth(clerk);
+    await initIrongateAuth(window.Clerk);
   });
 </script>
+
 
 
 
