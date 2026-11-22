@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In | Iron Gate Industries</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: #000000;
@@ -28,25 +24,9 @@
       padding: 20px 40px;
       font-size: 14px;
     }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-    }
-
-    .logo img {
-      height: 36px;
-      width: auto;
-      display: block;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-    }
-
+    .nav-left { display: flex; align-items: center; gap: 36px; }
+    .logo img { height: 36px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
     .nav-links a {
       color: #D1D1D1;
       text-decoration: none;
@@ -55,17 +35,10 @@
       gap: 5px;
       transition: color 0.2s;
     }
-
-    .nav-links a:hover {
-      color: #FFFFFF;
-    }
+    .nav-links a:hover { color: #FFFFFF; }
 
     /* --- Dropdown Menu for "Systems" --- */
-    .nav-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
+    .nav-dropdown { position: relative; display: inline-block; }
     .nav-dropdown-btn {
       background: none;
       border: none;
@@ -79,21 +52,10 @@
       padding: 4px 0;
       transition: color 0.2s;
     }
-
     .nav-dropdown-btn:hover,
-    .nav-dropdown.open .nav-dropdown-btn {
-      color: #FFFFFF;
-    }
-
-    .nav-dropdown-btn .chevron {
-      transition: transform 0.2s ease;
-      display: inline-block;
-    }
-
-    .nav-dropdown.open .chevron {
-      transform: rotate(180deg);
-    }
-
+    .nav-dropdown.open .nav-dropdown-btn { color: #FFFFFF; }
+    .nav-dropdown-btn .chevron { transition: transform 0.2s ease; display: inline-block; }
+    .nav-dropdown.open .chevron { transform: rotate(180deg); }
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -109,11 +71,7 @@
       flex-direction: column;
       gap: 2px;
     }
-
-    .nav-dropdown.open .dropdown-menu {
-      display: flex;
-    }
-
+    .nav-dropdown.open .dropdown-menu { display: flex; }
     .dropdown-menu a {
       color: #D1D1D1;
       text-decoration: none;
@@ -123,19 +81,9 @@
       display: block;
       transition: background-color 0.15s, color 0.15s;
     }
+    .dropdown-menu a:hover { background-color: #1F1F1F; color: #FFFFFF; }
 
-    .dropdown-menu a:hover {
-      background-color: #1F1F1F;
-      color: #FFFFFF;
-    }
-
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-
+    .nav-right { display: flex; align-items: center; gap: 24px; }
     .nav-right a,
     .icon-btn {
       color: #D1D1D1;
@@ -149,11 +97,8 @@
       font-size: 14px;
       transition: color 0.2s;
     }
-
     .nav-right a:hover,
-    .icon-btn:hover {
-      color: #FFFFFF;
-    }
+    .icon-btn:hover { color: #FFFFFF; }
 
     /* --- Main Split Layout --- */
     main {
@@ -167,8 +112,6 @@
       margin: 0 auto;
       gap: 56px;
     }
-
-    /* Left Hero + Rocket Graphic */
     .hero-section {
       display: flex;
       align-items: center;
@@ -176,7 +119,6 @@
       flex: 1;
       justify-content: flex-end;
     }
-
     .hero-title {
       font-size: 56px;
       font-weight: 500;
@@ -184,21 +126,8 @@
       letter-spacing: -0.02em;
       white-space: nowrap;
     }
-
-    .rocket-art {
-      width: 280px;
-      height: auto;
-      display: block;
-      flex-shrink: 0;
-    }
-
-    /* Center Vertical Divider */
-    .vertical-divider {
-      width: 1px;
-      height: 410px;
-      background-color: #4A4A4A;
-      flex-shrink: 0;
-    }
+    .rocket-art { width: 280px; height: auto; display: block; flex-shrink: 0; }
+    .vertical-divider { width: 1px; height: 410px; background-color: #4A4A4A; flex-shrink: 0; }
 
     /* Right Auth Form Column */
     .auth-section {
@@ -208,7 +137,6 @@
       flex-direction: column;
       gap: 16px;
     }
-
     .auth-btn {
       width: 100%;
       height: 50px;
@@ -221,51 +149,16 @@
       cursor: pointer;
       transition: transform 0.1s ease, background-color 0.2s ease, border-color 0.2s ease;
     }
+    .auth-btn:active { transform: scale(0.99); }
+    .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .auth-btn:active {
-      transform: scale(0.99);
-    }
+    .btn-google { background-color: #FFFFFF; color: #5F6368; border: none; gap: 14px; }
+    .btn-google:hover { background-color: #F1F3F4; }
+    .btn-microsoft { background-color: #1F1F1F; color: #FFFFFF; border: 1px solid #3A3A3A; gap: 14px; }
+    .btn-microsoft:hover { background-color: #2B2B2B; border-color: #555555; }
+    .btn-github { background-color: #24292F; color: #FFFFFF; border: 1px solid #3A3A3A; gap: 14px; }
+    .btn-github:hover { background-color: #32383F; border-color: #555555; }
 
-    /* Google Button */
-    .btn-google {
-      background-color: #FFFFFF;
-      color: #5F6368;
-      border: none;
-      gap: 14px;
-    }
-
-    .btn-google:hover {
-      background-color: #F1F3F4;
-    }
-
-    /* Microsoft Button (Official Dark Mode Styling) */
-    .btn-microsoft {
-      background-color: #1F1F1F;
-      color: #FFFFFF;
-      border: 1px solid #3A3A3A;
-      gap: 14px;
-    }
-
-    .btn-microsoft:hover {
-      background-color: #2B2B2B;
-      border-color: #555555;
-    }
-
-    /* GitHub Button (Official Dark Mode Styling) */
-    .btn-github {
-      background-color: #24292F;
-      color: #FFFFFF;
-      border: 1px solid #3A3A3A;
-      gap: 14px;
-    }
-
-    .btn-github:hover {
-      background-color: #32383F;
-      border-color: #555555;
-    }
-
-
-    /* Horizontal "or" Divider */
     .or-divider {
       display: flex;
       align-items: center;
@@ -274,22 +167,10 @@
       font-size: 14px;
       margin: 4px 0;
     }
-
     .or-divider::before,
-    .or-divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background-color: #4A4A4A;
-    }
+    .or-divider::after { content: ""; flex: 1; height: 1px; background-color: #4A4A4A; }
 
-    /* Email Input Box */
-    #email-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
+    #email-form { display: flex; flex-direction: column; gap: 16px; }
     #email-input {
       width: 100%;
       height: 50px;
@@ -302,83 +183,26 @@
       outline: none;
       transition: border-color 0.2s ease;
     }
+    #email-input::placeholder { color: #7A7A7A; opacity: 1; }
+    #email-input:focus { border-color: #FFFFFF; }
 
-    #email-input::placeholder {
-      color: #7A7A7A;
-      opacity: 1;
-    }
+    .btn-launch { background-color: #555555; color: #FFFFFF; border: none; justify-content: center; font-weight: 500; }
+    .btn-launch:hover:not(:disabled) { background-color: #686868; }
 
-    #email-input:focus {
-      border-color: #FFFFFF;
-    }
+    #auth-status { font-size: 13px; color: #A3E635; text-align: center; min-height: 18px; }
+    #auth-status.error { color: #F87171; }
 
-    /* Launch Submit Button */
-    .btn-launch {
-      background-color: #555555;
-      color: #FFFFFF;
-      border: none;
-      justify-content: center;
-      font-weight: 500;
-    }
+    .legal-text { font-size: 13px; color: #CCCCCC; text-align: center; line-height: 1.45; margin-top: 6px; }
+    .legal-text a { color: #FFFFFF; text-decoration: underline; }
 
-    .btn-launch:hover {
-      background-color: #686868;
-    }
-
-    /* Status / Verification Code Feedback */
-    #auth-status {
-      font-size: 13px;
-      color: #A3E635;
-      text-align: center;
-      min-height: 18px;
-    }
-
-    #auth-status.error {
-      color: #F87171;
-    }
-
-    /* Legal Footer Text */
-    .legal-text {
-      font-size: 13px;
-      color: #CCCCCC;
-      text-align: center;
-      line-height: 1.45;
-      margin-top: 6px;
-    }
-
-    .legal-text a {
-      color: #FFFFFF;
-      text-decoration: underline;
-    }
-
-    /* Responsive Adjustments for Mobile/Tablet */
     @media (max-width: 960px) {
-      header {
-        padding: 16px 20px;
-      }
-      .nav-links {
-        display: none;
-      }
-      main {
-        flex-direction: column;
-        padding: 30px 24px;
-        gap: 32px;
-      }
-      .hero-section {
-        flex-direction: column;
-        text-align: center;
-      }
-      .hero-title {
-        font-size: 40px;
-      }
-      .rocket-art {
-        width: 210px;
-      }
-      .vertical-divider {
-        width: 100%;
-        max-width: 390px;
-        height: 1px;
-      }
+      header { padding: 16px 20px; }
+      .nav-links { display: none; }
+      main { flex-direction: column; padding: 30px 24px; gap: 32px; }
+      .hero-section { flex-direction: column; text-align: center; }
+      .hero-title { font-size: 40px; }
+      .rocket-art { width: 210px; }
+      .vertical-divider { width: 100%; max-width: 390px; height: 1px; }
     }
 
     /* --- Slide-Down Auth Modal Overlay --- */
@@ -396,11 +220,7 @@
       transition: opacity 0.25s ease;
       padding: 20px;
     }
-
-    .modal-backdrop.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal-backdrop.active { opacity: 1; pointer-events: auto; }
 
     .auth-modal {
       background-color: #0F0F0F;
@@ -411,16 +231,11 @@
       padding: 32px 28px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
       position: relative;
-      /* Starts slightly above center and slides down when .active */
       transform: translateY(-48px);
       opacity: 0;
       transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
     }
-
-    .modal-backdrop.active .auth-modal {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .modal-backdrop.active .auth-modal { transform: translateY(0); opacity: 1; }
 
     .modal-close {
       position: absolute;
@@ -433,31 +248,10 @@
       cursor: pointer;
       line-height: 1;
     }
-
-    .modal-close:hover {
-      color: #FFFFFF;
-    }
-
-    .modal-title {
-      font-size: 22px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: #FFFFFF;
-    }
-
-    .modal-subtitle {
-      font-size: 14px;
-      color: #9A9A9A;
-      line-height: 1.45;
-      margin-bottom: 22px;
-    }
-
-    .modal-form {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
+    .modal-close:hover { color: #FFFFFF; }
+    .modal-title { font-size: 22px; font-weight: 500; margin-bottom: 8px; color: #FFFFFF; }
+    .modal-subtitle { font-size: 14px; color: #9A9A9A; line-height: 1.45; margin-bottom: 22px; }
+    .modal-form { display: flex; flex-direction: column; gap: 14px; }
     .modal-input {
       width: 100%;
       height: 48px;
@@ -470,18 +264,8 @@
       outline: none;
       transition: border-color 0.2s;
     }
-
-    .modal-input:focus {
-      border-color: #FFFFFF;
-    }
-
-    .modal-input.code-input {
-      text-align: center;
-      letter-spacing: 8px;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
+    .modal-input:focus { border-color: #FFFFFF; }
+    .modal-input.code-input { text-align: center; letter-spacing: 8px; font-size: 20px; font-weight: 600; }
     .modal-submit {
       width: 100%;
       height: 48px;
@@ -495,23 +279,10 @@
       margin-top: 4px;
       transition: background-color 0.2s;
     }
-
-    .modal-submit:hover {
-      background-color: #E5E5E5;
-    }
-
-    .modal-error {
-      font-size: 13px;
-      color: #F87171;
-      text-align: center;
-      min-height: 18px;
-      margin-top: 6px;
-    }
-
-    .hidden-step {
-      display: none !important;
-    }
-
+    .modal-submit:hover:not(:disabled) { background-color: #E5E5E5; }
+    .modal-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .modal-error { font-size: 13px; color: #F87171; text-align: center; min-height: 18px; margin-top: 6px; }
+    .hidden-step { display: none !important; }
   </style>
 </head>
 <body>
@@ -519,17 +290,15 @@
 <!-- Top Navigation -->
 <header>
   <div class="nav-left">
-    <a href="/public" class="logo">
-      <!-- Replace "logo.png" with your actual logo image path -->
+    <a href="/" class="logo">
       <img src="/public/4b81e99c953d4e4f8fb34dd45ff89a4311.png" alt="Iron Gate Industries" />
     </a>
 
     <nav class="nav-links">
-      <a href="#about">About us <span>&#8964;</span></a>
-      <a href="#work">Our Work <span>&#8964;</span></a>
-      <a href="#updates">Updates <span>&#8964;</span></a>
+      <a href="/#about">About us <span>&#8964;</span></a>
+      <a href="/#work">Our Work <span>&#8964;</span></a>
+      <a href="/#updates">Updates <span>&#8964;</span></a>
 
-      <!-- Systems Dropdown -->
       <div class="nav-dropdown" id="systems-dropdown">
         <button type="button" class="nav-dropdown-btn" id="systems-btn" aria-expanded="false">
           Systems <span class="chevron">&#8964;</span>
@@ -543,7 +312,7 @@
   </div>
 
   <div class="nav-right">
-    <button class="icon-btn" aria-label="Search">
+    <button class="icon-btn" aria-label="Search" type="button">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -560,26 +329,23 @@
       </svg>
     </a>
 
-
-    <a href="">Sign In</a>
+    <!-- FIX: this wrapper was missing, so the user button had nowhere to mount -->
+    <div id="auth-nav-slot">
+      <a href="#email-input">Sign In</a>
+    </div>
   </div>
 </header>
 
 <!-- Main Content -->
 <main>
-  <!-- Left Column: Hero Title + Rocket Image -->
   <section class="hero-section">
     <h1 class="hero-title">Ready to<br>Launch?</h1>
-    <!-- Replace "rocket.png" with your actual rocket image path -->
     <img src="../public/Screenshot%202026-11-21%20135954.png" alt="Rocket on launchpad" class="rocket-art" />
   </section>
 
-  <!-- Center Vertical Divider -->
   <div class="vertical-divider"></div>
 
-  <!-- Right Column: Authentication Card -->
   <section class="auth-section">
-    <!-- Continue with Google Button -->
     <button id="google-btn" type="button" class="auth-btn btn-google">
       <svg width="22" height="22" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -590,7 +356,6 @@
       <span>Continue with Google</span>
     </button>
 
-    <!-- Continue with Microsoft Button -->
     <button id="microsoft-btn" type="button" class="auth-btn btn-microsoft">
       <svg width="21" height="21" viewBox="0 0 21 21">
         <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
@@ -601,7 +366,6 @@
       <span>Continue with Microsoft</span>
     </button>
 
-    <!-- Continue with GitHub Button -->
     <button id="github-btn" type="button" class="auth-btn btn-github">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
@@ -609,25 +373,14 @@
       <span>Continue with GitHub</span>
     </button>
 
-
-    <!-- Horizontal "or" Divider -->
     <div class="or-divider">or</div>
 
-    <!-- Email Form -->
     <form id="email-form">
-      <input
-              type="email"
-              id="email-input"
-              placeholder="Type your email"
-              required
-              autocomplete="email"
-      />
-      <button type="submit" id="launch-btn" class="auth-btn btn-launch">
-        Launch!
-      </button>
+      <input type="email" id="email-input" placeholder="Type your email" required autocomplete="email" />
+      <button type="submit" id="launch-btn" class="auth-btn btn-launch">Launch!</button>
     </form>
 
-    <p id="auth-status"></p>
+    <p id="auth-status" role="status"></p>
 
     <p class="legal-text">
       By signing in, or signing up, you agree to our<br>
@@ -636,624 +389,317 @@
   </section>
 </main>
 
-<!-- Clerk JavaScript SDK -->
-<!-- 1. Official Clerk Browser SDK -->
+<!-- FIX: this whole modal was missing from the page (only its CSS existed). -->
+<div class="modal-backdrop" id="auth-modal-backdrop">
+  <div class="auth-modal" role="dialog" aria-modal="true">
+    <button type="button" class="modal-close" id="modal-close-btn" aria-label="Close">&times;</button>
+
+    <!-- New user: verify email code -->
+    <div id="step-verify-code" class="hidden-step">
+      <h2 class="modal-title">Check your email</h2>
+      <p class="modal-subtitle" id="verify-subtitle"></p>
+      <form id="code-form" class="modal-form">
+        <input type="text" id="otp-input" class="modal-input code-input" inputmode="numeric"
+               autocomplete="one-time-code" maxlength="6" placeholder="000000" required />
+        <button type="submit" class="modal-submit">Verify</button>
+      </form>
+    </div>
+
+    <!-- New user: name + password -->
+    <div id="step-complete-signup" class="hidden-step">
+      <h2 class="modal-title">Finish creating your account</h2>
+      <p class="modal-subtitle">Tell us your name and choose a password.</p>
+      <form id="signup-details-form" class="modal-form">
+        <input type="text" id="fullname-input" class="modal-input" placeholder="Full name" autocomplete="name" required />
+        <input type="password" id="new-password-input" class="modal-input" placeholder="Password" autocomplete="new-password" required />
+        <input type="password" id="confirm-password-input" class="modal-input" placeholder="Confirm password" autocomplete="new-password" required />
+        <button type="submit" class="modal-submit">Create account</button>
+      </form>
+    </div>
+
+    <!-- Existing user: password -->
+    <div id="step-existing-password" class="hidden-step">
+      <h2 class="modal-title" id="welcome-back-title">Welcome back</h2>
+      <p class="modal-subtitle" id="welcome-back-subtitle"></p>
+      <form id="existing-password-form" class="modal-form">
+        <input type="password" id="existing-password-input" class="modal-input" placeholder="Password" autocomplete="current-password" required />
+        <button type="submit" class="modal-submit">Sign in</button>
+      </form>
+    </div>
+
+    <p class="modal-error" id="modal-error-text"></p>
+  </div>
+</div>
+
+<!--
+  FIX: Clerk needs TWO scripts: the UI bundle AND clerk-js itself.
+  The page only had the UI bundle, so window.Clerk never existed.
+-->
+<script
+        defer
+        crossorigin="anonymous"
+        src="https://clerk.irongateindustries.com/npm/@clerk/ui@1/dist/ui.browser.js"
+        type="text/javascript">
+</script>
 <script
         defer
         crossorigin="anonymous"
         data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
-        src="https://clerk.irongateindustries.com/npm/@clerk/ui@1/dist/ui.browser.js"
+        src="https://clerk.irongateindustries.com/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
         type="text/javascript">
 </script>
 
-<!-- 2. Complete Self-Contained Irongate Auth & Modal Logic -->
+<!-- FIX: one script block (the page had two copies of everything, so every handler fired twice) -->
 <script>
-  // Systems Dropdown Menu Toggle
-  const systemsDropdown = document.getElementById('systems-dropdown');
+  (function () {
+    const $ = (id) => document.getElementById(id);
 
-  // Live Payload Bay Counter
-  function updatePayloadBadge() {
-    try {
-      const cart = JSON.parse(localStorage.getItem('irongate_payload_bay')) || [];
-      const totalUnits = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-      const badge = document.getElementById('nav-bay-count');
-      if (badge) badge.textContent = totalUnits;
-    } catch (e) {}
-  }
-  updatePayloadBadge();
-  window.addEventListener('storage', updatePayloadBadge);
-
-  // Wait for Clerk SDK to finish downloading, then initialize
-  window.addEventListener('load', async function () {
-    const statusEl = document.getElementById('auth-status');
-    const backdrop = document.getElementById('auth-modal-backdrop');
-    const modalError = document.getElementById('modal-error-text');
-
-    const stepVerifyCode = document.getElementById('step-verify-code');
-    const stepCompleteSignup = document.getElementById('step-complete-signup');
-    const stepExistingPassword = document.getElementById('step-existing-password');
-
-    // Wait up to 5 seconds for window.Clerk to attach
-    let attempts = 0;
-    while (!window.Clerk && attempts < 50) {
-      await new Promise((r) => setTimeout(r, 100));
-      attempts++;
-    }
-
-    if (!window.Clerk) {
-      if (statusEl) {
-        statusEl.classList.add('error');
-        statusEl.textContent = 'Could not download Clerk JS from CDN.';
-      }
-      return;
-    }
-
-    // Handle both constructor class (jsDelivr) and pre-instantiated object (Clerk FAPI)
-    let clerk = window.Clerk;
-    if (typeof clerk === 'function') {
-      clerk = new clerk('pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ');
-      window.Clerk = clerk;
-    }
-
-    try {
-      await clerk.load();
-    } catch (err) {
-      if (statusEl) {
-        statusEl.classList.add('error');
-        statusEl.textContent = 'Clerk load failed: ' + (err.message || err);
-      }
-      return;
-    }
-
-    let activeSignIn = null;
-    let activeSignUp = null;
-
-    function openModalStep(stepElement) {
-      modalError.textContent = '';
-      stepVerifyCode.classList.add('hidden-step');
-      stepCompleteSignup.classList.add('hidden-step');
-      stepExistingPassword.classList.add('hidden-step');
-      stepElement.classList.remove('hidden-step');
-      backdrop.classList.add('active');
-    }
-
-    const closeBtn = document.getElementById('modal-close-btn');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => backdrop.classList.remove('active'));
-    }
-
-    async function finishLoginAndRedirect(sessionId) {
-      await clerk.setActive({ session: sessionId });
-      backdrop.classList.remove('active');
-
-      const navSlot = document.getElementById('auth-nav-slot');
-      if (navSlot && clerk.user) {
-        navSlot.innerHTML = '<div id="user-button"></div>';
-        clerk.mountUserButton(document.getElementById('user-button'));
-      }
-
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 700);
-    }
-
-    // If already signed in, mount user avatar and go home
-    if (clerk.user) {
-      const navSlot = document.getElementById('auth-nav-slot');
-      if (navSlot) {
-        navSlot.innerHTML = '<div id="user-button"></div>';
-        clerk.mountUserButton(document.getElementById('user-button'));
-      }
-      window.location.href = '/';
-      return;
-    }
-
-    // Google, Microsoft, and GitHub OAuth Buttons
-    document.getElementById('google-btn')?.addEventListener('click', () => {
-      clerk.client.signIn.authenticateWithRedirect({
-        strategy: 'oauth_google',
-        redirectUrl: '/sso-callback.html',
-        redirectUrlComplete: '/'
+    // ---- Systems dropdown ----
+    const systemsDropdown = $('systems-dropdown');
+    const systemsBtn = $('systems-btn');
+    if (systemsBtn && systemsDropdown) {
+      systemsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = systemsDropdown.classList.toggle('open');
+        systemsBtn.setAttribute('aria-expanded', String(isOpen));
       });
-    });
-
-    document.getElementById('microsoft-btn')?.addEventListener('click', () => {
-      clerk.client.signIn.authenticateWithRedirect({
-        strategy: 'oauth_microsoft',
-        redirectUrl: '/sso-callback.html',
-        redirectUrlComplete: '/'
-      });
-    });
-
-    document.getElementById('github-btn')?.addEventListener('click', () => {
-      clerk.client.signIn.authenticateWithRedirect({
-        strategy: 'oauth_github',
-        redirectUrl: '/sso-callback.html',
-        redirectUrlComplete: '/'
-      });
-    });
-
-    // STEP 1: Email Submit ("Launch!")
-    document.getElementById('email-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email-input').value.trim();
-      if (statusEl) {
-        statusEl.classList.remove('error');
-        statusEl.textContent = 'Checking account...';
-      }
-
-      try {
-        activeSignIn = await clerk.client.signIn.create({ identifier: email });
-        if (statusEl) statusEl.textContent = '';
-
-        const userName = activeSignIn.userData?.firstName;
-        document.getElementById('welcome-back-title').textContent =
-                userName ? `Welcome back, ${userName}` : 'Welcome back';
-        document.getElementById('welcome-back-subtitle').textContent =
-                `Enter the password for ${email} to continue.`;
-        document.getElementById('existing-password-input').value = '';
-
-        openModalStep(stepExistingPassword);
-        document.getElementById('existing-password-input').focus();
-      } catch (err) {
-        try {
-          activeSignUp = await clerk.client.signUp.create({ emailAddress: email });
-          await activeSignUp.prepareEmailAddressVerification({ strategy: 'email_code' });
-
-          if (statusEl) statusEl.textContent = '';
-          document.getElementById('verify-subtitle').textContent =
-                  `We sent a 6-digit verification code to ${email}. Enter it below.`;
-          document.getElementById('otp-input').value = '';
-
-          openModalStep(stepVerifyCode);
-          document.getElementById('otp-input').focus();
-        } catch (signUpErr) {
-          if (statusEl) {
-            statusEl.classList.add('error');
-            statusEl.textContent =
-                    signUpErr.errors?.[0]?.longMessage ||
-                    signUpErr.errors?.[0]?.message ||
-                    'Could not start sign-up. Check Clerk settings.';
-          }
+      document.addEventListener('click', (e) => {
+        if (!systemsDropdown.contains(e.target)) {
+          systemsDropdown.classList.remove('open');
+          systemsBtn.setAttribute('aria-expanded', 'false');
         }
-      }
-    });
+      });
+    }
 
-    // STEP 2A: Verify 6-Digit Email Code
-    document.getElementById('code-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      modalError.textContent = '';
-      const code = document.getElementById('otp-input').value.trim();
-
+    // ---- Payload Bay badge (hidden at 0, matches the homepage) ----
+    function updatePayloadBadge() {
       try {
-        const result = await activeSignUp.attemptEmailAddressVerification({ code });
-        if (result.status === 'complete') {
-          await finishLoginAndRedirect(result.createdSessionId);
-        } else {
-          openModalStep(stepCompleteSignup);
-          document.getElementById('fullname-input').focus();
-        }
-      } catch (err) {
-        modalError.textContent =
-                err.errors?.[0]?.longMessage || err.errors?.[0]?.message || 'Invalid verification code.';
+        const cart = JSON.parse(localStorage.getItem('irongate_payload_bay')) || [];
+        const total = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+        const badge = $('nav-bay-count');
+        if (badge) badge.textContent = total > 0 ? ` (${total})` : '';
+      } catch (e) { /* ignore storage errors */ }
+    }
+    updatePayloadBadge();
+    window.addEventListener('storage', updatePayloadBadge);
+
+    // Until Clerk is ready, don't let the form do a native page-reload submit
+    $('email-form').addEventListener('submit', (e) => e.preventDefault());
+
+    // ---- Clerk auth ----
+    window.addEventListener('load', async function () {
+      const statusEl = $('auth-status');
+      const backdrop = $('auth-modal-backdrop');
+      const modalError = $('modal-error-text');
+      const launchBtn = $('launch-btn');
+
+      const steps = {
+        verify: $('step-verify-code'),
+        signup: $('step-complete-signup'),
+        password: $('step-existing-password')
+      };
+
+      const setStatus = (msg, isError) => {
+        statusEl.textContent = msg || '';
+        statusEl.classList.toggle('error', !!isError);
+      };
+      const errMsg = (err, fallback) =>
+              (err && err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) || fallback;
+
+      // Wait up to 5s for the async Clerk script to attach window.Clerk
+      let attempts = 0;
+      while (!window.Clerk && attempts < 50) {
+        await new Promise((r) => setTimeout(r, 100));
+        attempts++;
       }
-    });
-
-    // STEP 2B: Complete Sign-Up (Full Name + Password)
-    document.getElementById('signup-details-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      modalError.textContent = '';
-
-      const fullName = document.getElementById('fullname-input').value.trim();
-      const password = document.getElementById('new-password-input').value;
-      const confirmPassword = document.getElementById('confirm-password-input').value;
-
-      if (password !== confirmPassword) {
-        modalError.textContent = 'Passwords do not match. Please try again.';
+      if (!window.Clerk) {
+        setStatus('Could not load Clerk. Check the script tags, your connection, and that this domain is allowed.', true);
         return;
       }
 
-      const nameParts = fullName.split(/\s+/);
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
+      const clerk = window.Clerk;
       try {
-        const updatedSignUp = await activeSignUp.update({ firstName, lastName, password });
-        if (updatedSignUp.status === 'complete') {
-          await finishLoginAndRedirect(updatedSignUp.createdSessionId);
-        } else {
-          modalError.textContent = 'Additional verification required: ' + updatedSignUp.status;
-        }
+        await clerk.load({ ui: { ClerkUI: window.__internal_ClerkUICtor } });
       } catch (err) {
-        modalError.textContent =
-                err.errors?.[0]?.longMessage || err.errors?.[0]?.message || 'Could not create account.';
-      }
-    });
-
-    // STEP 3: Existing User Password Sign-In
-    document.getElementById('existing-password-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      modalError.textContent = '';
-      const password = document.getElementById('existing-password-input').value;
-
-      try {
-        const result = await activeSignIn.attemptFirstFactor({ strategy: 'password', password });
-        if (result.status === 'complete') {
-          await finishLoginAndRedirect(result.createdSessionId);
-        } else {
-          openModalStep(stepCompleteSignup);
-          document.getElementById('fullname-input').focus();
-        }
-      } catch (err) {
-        modalError.textContent =
-                (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
-                'Invalid verification code.';
-      }
-    });
-
-    // STEP 2B: Complete Sign-Up (Full Name + Password)
-    document.getElementById('signup-details-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      modalError.textContent = '';
-
-      const fullName = document.getElementById('fullname-input').value.trim();
-      const password = document.getElementById('new-password-input').value;
-      const confirmPassword = document.getElementById('confirm-password-input').value;
-
-      if (password !== confirmPassword) {
-        modalError.textContent = 'Passwords do not match. Please try again.';
+        setStatus('Clerk load failed: ' + (err.message || err), true);
         return;
       }
 
-      const nameParts = fullName.split(/\s+/);
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
-      try {
-        const updatedSignUp = await activeSignUp.update({ firstName, lastName, password });
-        if (updatedSignUp.status === 'complete') {
-          await finishLoginAndRedirect(updatedSignUp.createdSessionId);
-        } else {
-          modalError.textContent = 'Additional verification required: ' + updatedSignUp.status;
-        }
-      } catch (err) {
-        modalError.textContent =
-                (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
-                'Could not create account.';
-      }
-    });
-
-    // STEP 3: Existing User Password Sign-In
-    document.getElementById('existing-password-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      modalError.textContent = '';
-      const password = document.getElementById('existing-password-input').value;
-
-      try {
-        const result = await activeSignIn.attemptFirstFactor({ strategy: 'password', password });
-        if (result.status === 'complete') {
-          await finishLoginAndRedirect(result.createdSessionId);
-        } else {
-          modalError.textContent = 'Sign-in incomplete: ' + result.status;
-        }
-      } catch (err) {
-        modalError.textContent =
-                (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
-                'Incorrect password.';
-      }
-    });
-  });
-</script>
-
-</body>
-</html>
-
-
-
-
-
-
-<!-- Complete Page Logic: Dropdown, Payload Bay Badge, Slide-Down Modal & Clerk Auth -->
-<script>
-  // 1. Systems Dropdown Menu Toggle
-  const systemsBtn = document.getElementById('systems-btn');
-
-  if (systemsBtn && systemsDropdown) {
-    systemsBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = systemsDropdown.classList.toggle('open');
-      systemsBtn.setAttribute('aria-expanded', isOpen);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!systemsDropdown.contains(e.target)) {
-        systemsDropdown.classList.remove('open');
-        systemsBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
-  // 2. Live Payload Bay Counter
-  function updatePayloadBadge() {
-    try {
-      const cart = JSON.parse(localStorage.getItem('irongate_payload_bay')) || [];
-      const totalUnits = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-      const badge = document.getElementById('nav-bay-count');
-      if (badge) {
-        badge.textContent = totalUnits;
-      }
-    } catch (e) {
-      // Ignore storage errors
-    }
-  }
-
-  updatePayloadBadge();
-  window.addEventListener('storage', updatePayloadBadge);
-
-  // 3. Clerk Authentication & Slide-Down Verification Modal
-  window.addEventListener('load', async function () {
-    const statusEl = document.getElementById('auth-status');
-    const backdrop = document.getElementById('auth-modal-backdrop');
-    const modalError = document.getElementById('modal-error-text');
-
-    const stepVerifyCode = document.getElementById('step-verify-code');
-    const stepCompleteSignup = document.getElementById('step-complete-signup');
-    const stepExistingPassword = document.getElementById('step-existing-password');
-
-    let activeSignIn = null;
-    let activeSignUp = null;
-
-    function openModalStep(stepElement) {
-      modalError.textContent = '';
-      stepVerifyCode.classList.add('hidden-step');
-      stepCompleteSignup.classList.add('hidden-step');
-      stepExistingPassword.classList.add('hidden-step');
-      stepElement.classList.remove('hidden-step');
-      backdrop.classList.add('active');
-    }
-
-    const closeBtn = document.getElementById('modal-close-btn');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        backdrop.classList.remove('active');
-      });
-    }
-
-    // Mount person/avatar icon in top-right corner, then redirect to main homepage
-    async function finishLoginAndRedirect(sessionId) {
-      await window.Clerk.setActive({ session: sessionId });
-      backdrop.classList.remove('active');
-
-      const navSlot = document.getElementById('auth-nav-slot');
-      if (navSlot && window.Clerk.user) {
-        navSlot.innerHTML = '<div id="user-button"></div>';
-        window.Clerk.mountUserButton(document.getElementById('user-button'));
-      }
-
-      setTimeout(() => {
+      // Already signed in -> go home
+      if (clerk.user) {
         window.location.href = '/';
-      }, 700);
-    }
-
-    // Wait up to 5 seconds for the async Clerk SDK to attach to window.Clerk
-    let attempts = 0;
-    while (!window.Clerk && attempts < 50) {
-      await new Promise((r) => setTimeout(r, 100));
-      attempts++;
-    }
-
-    if (!window.Clerk) {
-      if (statusEl) {
-        statusEl.textContent = 'Clerk failed to load. Check your connection or DNS settings.';
-        statusEl.classList.add('error');
+        return;
       }
-      return;
-    }
 
-    await window.Clerk.load();
+      let activeSignIn = null;
+      let activeSignUp = null;
 
-
-    await window.Clerk.load();
-
-    // If user is already logged in, display avatar icon and redirect to homepage
-    if (window.Clerk.user) {
-      const navSlot = document.getElementById('auth-nav-slot');
-      if (navSlot) {
-        navSlot.innerHTML = '<div id="user-button"></div>';
-        window.Clerk.mountUserButton(document.getElementById('user-button'));
+      function openStep(name) {
+        modalError.textContent = '';
+        Object.values(steps).forEach((el) => el.classList.add('hidden-step'));
+        steps[name].classList.remove('hidden-step');
+        backdrop.classList.add('active');
       }
-      window.location.href = '/';
-      return;
-    }
+      function closeModal() { backdrop.classList.remove('active'); }
 
-    // Continue with Google
-    const googleBtn = document.getElementById('google-btn');
-    if (googleBtn) {
-      googleBtn.addEventListener('click', () => {
-        window.Clerk.client.signIn.authenticateWithRedirect({
-          strategy: 'oauth_google',
-          redirectUrl: '/sso-callback.html',
-          redirectUrlComplete: '/'
-        });
-      });
-    }
+      $('modal-close-btn').addEventListener('click', closeModal);
+      backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-    // Continue with Microsoft
-    const microsoftBtn = document.getElementById('microsoft-btn');
-    if (microsoftBtn) {
-      microsoftBtn.addEventListener('click', () => {
-        window.Clerk.client.signIn.authenticateWithRedirect({
-          strategy: 'oauth_microsoft',
-          redirectUrl: '/sso-callback.html',
-          redirectUrlComplete: '/'
-        });
-      });
-    }
+      // Disable a form's submit button while a request is in flight
+      async function withBusy(form, fn) {
+        const btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+        try { await fn(); } finally { if (btn) btn.disabled = false; }
+      }
 
-    // Continue with GitHub
-    const githubBtn = document.getElementById('github-btn');
-    if (githubBtn) {
-      githubBtn.addEventListener('click', () => {
-        window.Clerk.client.signIn.authenticateWithRedirect({
-          strategy: 'oauth_github',
-          redirectUrl: '/sso-callback.html',
-          redirectUrlComplete: '/'
-        });
-      });
-    }
+      async function finishLogin(sessionId) {
+        await clerk.setActive({ session: sessionId });
+        closeModal();
+        window.location.href = '/';
+      }
 
-    // STEP 1: User enters email and clicks "Launch!"
-    const emailForm = document.getElementById('email-form');
-    if (emailForm) {
-      emailForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email-input').value.trim();
-        if (statusEl) {
-          statusEl.classList.remove('error');
-          statusEl.textContent = 'Checking account...';
-        }
-
-        try {
-          // Check if an account with this email already exists
-          activeSignIn = await window.Clerk.client.signIn.create({
-            identifier: email,
-          });
-
-          if (statusEl) statusEl.textContent = '';
-
-          // Account exists -> Open "Welcome back" + Password modal
-          const userName = activeSignIn.userData && activeSignIn.userData.firstName;
-          document.getElementById('welcome-back-title').textContent =
-                  userName ? `Welcome back, ${userName}` : 'Welcome back';
-          document.getElementById('welcome-back-subtitle').textContent =
-                  `Enter the password for ${email} to continue.`;
-          document.getElementById('existing-password-input').value = '';
-
-          openModalStep(stepExistingPassword);
-          document.getElementById('existing-password-input').focus();
-
-        } catch (err) {
-          // Account does NOT exist -> Send 6-digit verification code & open Code modal
+      // ---- OAuth buttons ----
+      function oauth(strategy) {
+        return async () => {
+          setStatus('');
           try {
-            activeSignUp = await window.Clerk.client.signUp.create({
-              emailAddress: email,
+            await clerk.client.signIn.authenticateWithRedirect({
+              strategy,
+              redirectUrl: '/sso-callback.html',
+              redirectUrlComplete: '/'
             });
-            await activeSignUp.prepareEmailAddressVerification({
-              strategy: 'email_code',
-            });
+          } catch (err) {
+            setStatus(errMsg(err, 'Could not start sign-in.'), true);
+          }
+        };
+      }
+      $('google-btn').addEventListener('click', oauth('oauth_google'));
+      $('microsoft-btn').addEventListener('click', oauth('oauth_microsoft'));
+      $('github-btn').addEventListener('click', oauth('oauth_github'));
 
-            if (statusEl) statusEl.textContent = '';
-            document.getElementById('verify-subtitle').textContent =
-                    `We sent a 6-digit verification code to ${email}. Enter it below.`;
-            document.getElementById('otp-input').value = '';
+      // ---- STEP 1: email -> existing user (password) or new user (email code) ----
+      $('email-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = $('email-input').value.trim();
+        setStatus('Checking account...');
+        launchBtn.disabled = true;
 
-            openModalStep(stepVerifyCode);
-            document.getElementById('otp-input').focus();
-          } catch (signUpErr) {
-            if (statusEl) {
-              statusEl.classList.add('error');
-              statusEl.textContent =
-                      (signUpErr.errors && signUpErr.errors[0] && (signUpErr.errors[0].longMessage || signUpErr.errors[0].message)) ||
-                      'Could not start sign-up. Check Clerk settings.';
+        try {
+          // Does an account exist for this email?
+          let existing = true;
+          try {
+            activeSignIn = await clerk.client.signIn.create({ identifier: email });
+          } catch (err) {
+            // FIX: only treat "not found" as "new user". Any other error (rate limit,
+            // network, etc.) used to fall through to sign-up and show a confusing message.
+            if (err && err.errors && err.errors[0] && err.errors[0].code === 'form_identifier_not_found') {
+              existing = false;
+            } else {
+              throw err;
             }
           }
-        }
-      });
-    }
 
-    // STEP 2A (New User): Verify 6-digit email code
-    const codeForm = document.getElementById('code-form');
-    if (codeForm) {
-      codeForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        modalError.textContent = '';
-        const code = document.getElementById('otp-input').value.trim();
-
-        try {
-          const result = await activeSignUp.attemptEmailAddressVerification({ code });
-
-          if (result.status === 'complete') {
-            await finishLoginAndRedirect(result.createdSessionId);
+          if (existing) {
+            const hasPassword = (activeSignIn.supportedFirstFactors || []).some((f) => f.strategy === 'password');
+            if (!hasPassword) {
+              setStatus('This account has no password. Use Google, Microsoft or GitHub above.', true);
+              return;
+            }
+            const first = activeSignIn.userData && activeSignIn.userData.firstName;
+            $('welcome-back-title').textContent = first ? `Welcome back, ${first}` : 'Welcome back';
+            $('welcome-back-subtitle').textContent = `Enter the password for ${email} to continue.`;
+            $('existing-password-input').value = '';
+            setStatus('');
+            openStep('password');
+            $('existing-password-input').focus();
           } else {
-            // Code verified -> Transition popup to Full Name + Password + Confirm Password
-            openModalStep(stepCompleteSignup);
-            document.getElementById('fullname-input').focus();
+            activeSignUp = await clerk.client.signUp.create({ emailAddress: email });
+            await activeSignUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+            $('verify-subtitle').textContent = `We sent a 6-digit verification code to ${email}. Enter it below.`;
+            $('otp-input').value = '';
+            setStatus('');
+            openStep('verify');
+            $('otp-input').focus();
           }
         } catch (err) {
-          modalError.textContent =
-                  (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
-                  'Invalid verification code.';
+          setStatus(errMsg(err, 'Something went wrong. Please try again.'), true);
+        } finally {
+          launchBtn.disabled = false;
         }
       });
-    }
 
-    // STEP 2B (New User): Submit Full Name, Password & Confirm Password
-    const signupDetailsForm = document.getElementById('signup-details-form');
-    if (signupDetailsForm) {
-      signupDetailsForm.addEventListener('submit', async (e) => {
+      // ---- STEP 2A (new user): verify 6-digit code ----
+      $('code-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        modalError.textContent = '';
-
-        const fullName = document.getElementById('fullname-input').value.trim();
-        const password = document.getElementById('new-password-input').value;
-        const confirmPassword = document.getElementById('confirm-password-input').value;
-
-        if (password !== confirmPassword) {
-          modalError.textContent = 'Passwords do not match. Please try again.';
-          return;
-        }
-
-        const nameParts = fullName.split(/\s+/);
-        const firstName = nameParts[0] || '';
-        const lastName = nameParts.slice(1).join(' ') || '';
-
-        try {
-          const updatedSignUp = await activeSignUp.update({
-            firstName,
-            lastName,
-            password,
-          });
-
-          if (updatedSignUp.status === 'complete') {
-            await finishLoginAndRedirect(updatedSignUp.createdSessionId);
-          } else {
-            modalError.textContent = 'Additional verification required: ' + updatedSignUp.status;
+        withBusy(e.target, async () => {
+          modalError.textContent = '';
+          try {
+            const result = await activeSignUp.attemptEmailAddressVerification({ code: $('otp-input').value.trim() });
+            if (result.status === 'complete') {
+              await finishLogin(result.createdSessionId);
+            } else if (result.status === 'missing_requirements') {
+              openStep('signup');
+              $('fullname-input').focus();
+            } else {
+              modalError.textContent = 'Unexpected sign-up status: ' + result.status;
+            }
+          } catch (err) {
+            modalError.textContent = errMsg(err, 'Invalid verification code.');
           }
-        } catch (err) {
-          modalError.textContent =
-                  (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
-                  'Could not create account.';
-        }
+        });
       });
-    }
 
-    // STEP 3 (Existing User): Verify Password & Complete Sign In
-    const existingPasswordForm = document.getElementById('existing-password-form');
-    if (existingPasswordForm) {
-      existingPasswordForm.addEventListener('submit', async (e) => {
+      // ---- STEP 2B (new user): name + password ----
+      $('signup-details-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        modalError.textContent = '';
-        const password = document.getElementById('existing-password-input').value;
-
-        try {
-          const result = await activeSignIn.attemptFirstFactor({
-            strategy: 'password',
-            password,
-          });
-
-          if (result.status === 'complete') {
-            await finishLoginAndRedirect(result.createdSessionId);
-          } else {
-            modalError.textContent = 'Sign-in incomplete: ' + result.status;
+        withBusy(e.target, async () => {
+          modalError.textContent = '';
+          const fullName = $('fullname-input').value.trim();
+          const password = $('new-password-input').value;
+          if (password !== $('confirm-password-input').value) {
+            modalError.textContent = 'Passwords do not match. Please try again.';
+            return;
           }
-        } catch (err) {
-          modalError.textContent =
-                  (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
-                  'Incorrect password.';
-        }
+          const parts = fullName.split(/\s+/);
+          const firstName = parts[0] || '';
+          const lastName = parts.slice(1).join(' ');
+
+          try {
+            const result = await activeSignUp.update({ firstName, lastName, password });
+            if (result.status === 'complete') {
+              await finishLogin(result.createdSessionId);
+            } else {
+              modalError.textContent = 'Additional verification required: ' + result.status;
+            }
+          } catch (err) {
+            modalError.textContent = errMsg(err, 'Could not create account.');
+          }
+        });
       });
-    }
-  });
+
+      // ---- STEP 3 (existing user): password ----
+      $('existing-password-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        withBusy(e.target, async () => {
+          modalError.textContent = '';
+          try {
+            const result = await activeSignIn.attemptFirstFactor({
+              strategy: 'password',
+              password: $('existing-password-input').value
+            });
+            if (result.status === 'complete') {
+              await finishLogin(result.createdSessionId);
+            } else {
+              modalError.textContent = 'Additional verification required: ' + result.status;
+            }
+          } catch (err) {
+            modalError.textContent = errMsg(err, 'Incorrect password.');
+          }
+        });
+      });
+    });
+  })();
 </script>
 
 </body>
