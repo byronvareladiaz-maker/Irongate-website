@@ -637,33 +637,333 @@
 </main>
 
 <!-- Clerk JavaScript SDK -->
-<!-- Load Clerk Browser SDK directly from jsDelivr CDN -->
+<!-- 1. Official Clerk Browser SDK -->
 <script
-        defer
+        async
         crossorigin="anonymous"
         data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
         src="https://jsdelivr.net"
         type="text/javascript">
 </script>
 
+<!-- 2. Complete Self-Contained Irongate Auth & Modal Logic -->
 <script>
+  // Systems Dropdown Menu Toggle
+  const systemsDropdown = document.getElementById('systems-dropdown');
+  const systemsBtn = document.getElementById('systems-btn');
+
+  if (systemsBtn && systemsDropdown) {
+    systemsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = systemsDropdown.classList.toggle('open');
+      systemsBtn.setAttribute('aria-expanded', isOpen);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!systemsDropdown.contains(e.target)) {
+        systemsDropdown.classList.remove('open');
+        systemsBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Live Payload Bay Counter
+  function updatePayloadBadge() {
+    try {
+      const cart = JSON.parse(localStorage.getItem('irongate_payload_bay')) || [];
+      const totalUnits = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      const badge = document.getElementById('nav-bay-count');
+      if (badge) badge.textContent = totalUnits;
+    } catch (e) {}
+  }
+  updatePayloadBadge();
+  window.addEventListener('storage', updatePayloadBadge);
+
+  // Wait for Clerk SDK to finish downloading, then initialize
   window.addEventListener('load', async function () {
     const statusEl = document.getElementById('auth-status');
+    const backdrop = document.getElementById('auth-modal-backdrop');
+    const modalError = document.getElementById('modal-error-text');
+
+    const stepVerifyCode = document.getElementById('step-verify-code');
+    const stepCompleteSignup = document.getElementById('step-complete-signup');
+    const stepExistingPassword = document.getElementById('step-existing-password');
+
+    // Wait up to 5 seconds for window.Clerk to attach
+    let attempts = 0;
+    while (!window.Clerk && attempts < 50) {
+      await new Promise((r) => setTimeout(r, 100));
+      attempts++;
+    }
 
     if (!window.Clerk) {
       if (statusEl) {
         statusEl.classList.add('error');
-        statusEl.textContent = 'Clerk SDK blocked by browser/ad-blocker.';
+        statusEl.textContent = 'Could not download Clerk JS from CDN.';
       }
       return;
     }
 
-    await window.Clerk.load();
+    // Handle both constructor class (jsDelivr) and pre-instantiated object (Clerk FAPI)
+    let clerk = window.Clerk;
+    if (typeof clerk === 'function') {
+      clerk = new clerk('pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ');
+      window.Clerk = clerk;
+    }
 
-    // Run your Irongate login modal & button handlers!
-    await initIrongateAuth(window.Clerk);
+    try {
+      await clerk.load();
+    } catch (err) {
+      if (statusEl) {
+        statusEl.classList.add('error');
+        statusEl.textContent = 'Clerk load failed: ' + (err.message || err);
+      }
+      return;
+    }
+
+    let activeSignIn = null;
+    let activeSignUp = null;
+
+    function openModalStep(stepElement) {
+      modalError.textContent = '';
+      stepVerifyCode.classList.add('hidden-step');
+      stepCompleteSignup.classList.add('hidden-step');
+      stepExistingPassword.classList.add('hidden-step');
+      stepElement.classList.remove('hidden-step');
+      backdrop.classList.add('active');
+    }
+
+    const closeBtn = document.getElementById('modal-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => backdrop.classList.remove('active'));
+    }
+
+    async function finishLoginAndRedirect(sessionId) {
+      await clerk.setActive({ session: sessionId });
+      backdrop.classList.remove('active');
+
+      const navSlot = document.getElementById('auth-nav-slot');
+      if (navSlot && clerk.user) {
+        navSlot.innerHTML = '<div id="user-button"></div>';
+        clerk.mountUserButton(document.getElementById('user-button'));
+      }
+
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 700);
+    }
+
+    // If already signed in, mount user avatar and go home
+    if (clerk.user) {
+      const navSlot = document.getElementById('auth-nav-slot');
+      if (navSlot) {
+        navSlot.innerHTML = '<div id="user-button"></div>';
+        clerk.mountUserButton(document.getElementById('user-button'));
+      }
+      window.location.href = '/';
+      return;
+    }
+
+    // Google, Microsoft, and GitHub OAuth Buttons
+    document.getElementById('google-btn')?.addEventListener('click', () => {
+      clerk.client.signIn.authenticateWithRedirect({
+        strategy: 'oauth_google',
+        redirectUrl: '/sso-callback.html',
+        redirectUrlComplete: '/'
+      });
+    });
+
+    document.getElementById('microsoft-btn')?.addEventListener('click', () => {
+      clerk.client.signIn.authenticateWithRedirect({
+        strategy: 'oauth_microsoft',
+        redirectUrl: '/sso-callback.html',
+        redirectUrlComplete: '/'
+      });
+    });
+
+    document.getElementById('github-btn')?.addEventListener('click', () => {
+      clerk.client.signIn.authenticateWithRedirect({
+        strategy: 'oauth_github',
+        redirectUrl: '/sso-callback.html',
+        redirectUrlComplete: '/'
+      });
+    });
+
+    // STEP 1: Email Submit ("Launch!")
+    document.getElementById('email-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email-input').value.trim();
+      if (statusEl) {
+        statusEl.classList.remove('error');
+        statusEl.textContent = 'Checking account...';
+      }
+
+      try {
+        activeSignIn = await clerk.client.signIn.create({ identifier: email });
+        if (statusEl) statusEl.textContent = '';
+
+        const userName = activeSignIn.userData?.firstName;
+        document.getElementById('welcome-back-title').textContent =
+                userName ? `Welcome back, ${userName}` : 'Welcome back';
+        document.getElementById('welcome-back-subtitle').textContent =
+                `Enter the password for ${email} to continue.`;
+        document.getElementById('existing-password-input').value = '';
+
+        openModalStep(stepExistingPassword);
+        document.getElementById('existing-password-input').focus();
+      } catch (err) {
+        try {
+          activeSignUp = await clerk.client.signUp.create({ emailAddress: email });
+          await activeSignUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+
+          if (statusEl) statusEl.textContent = '';
+          document.getElementById('verify-subtitle').textContent =
+                  `We sent a 6-digit verification code to ${email}. Enter it below.`;
+          document.getElementById('otp-input').value = '';
+
+          openModalStep(stepVerifyCode);
+          document.getElementById('otp-input').focus();
+        } catch (signUpErr) {
+          if (statusEl) {
+            statusEl.classList.add('error');
+            statusEl.textContent =
+                    signUpErr.errors?.[0]?.longMessage ||
+                    signUpErr.errors?.[0]?.message ||
+                    'Could not start sign-up. Check Clerk settings.';
+          }
+        }
+      }
+    });
+
+    // STEP 2A: Verify 6-Digit Email Code
+    document.getElementById('code-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      modalError.textContent = '';
+      const code = document.getElementById('otp-input').value.trim();
+
+      try {
+        const result = await activeSignUp.attemptEmailAddressVerification({ code });
+        if (result.status === 'complete') {
+          await finishLoginAndRedirect(result.createdSessionId);
+        } else {
+          openModalStep(stepCompleteSignup);
+          document.getElementById('fullname-input').focus();
+        }
+      } catch (err) {
+        modalError.textContent =
+                err.errors?.[0]?.longMessage || err.errors?.[0]?.message || 'Invalid verification code.';
+      }
+    });
+
+    // STEP 2B: Complete Sign-Up (Full Name + Password)
+    document.getElementById('signup-details-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      modalError.textContent = '';
+
+      const fullName = document.getElementById('fullname-input').value.trim();
+      const password = document.getElementById('new-password-input').value;
+      const confirmPassword = document.getElementById('confirm-password-input').value;
+
+      if (password !== confirmPassword) {
+        modalError.textContent = 'Passwords do not match. Please try again.';
+        return;
+      }
+
+      const nameParts = fullName.split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      try {
+        const updatedSignUp = await activeSignUp.update({ firstName, lastName, password });
+        if (updatedSignUp.status === 'complete') {
+          await finishLoginAndRedirect(updatedSignUp.createdSessionId);
+        } else {
+          modalError.textContent = 'Additional verification required: ' + updatedSignUp.status;
+        }
+      } catch (err) {
+        modalError.textContent =
+                err.errors?.[0]?.longMessage || err.errors?.[0]?.message || 'Could not create account.';
+      }
+    });
+
+    // STEP 3: Existing User Password Sign-In
+    document.getElementById('existing-password-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      modalError.textContent = '';
+      const password = document.getElementById('existing-password-input').value;
+
+      try {
+        const result = await activeSignIn.attemptFirstFactor({ strategy: 'password', password });
+        if (result.status === 'complete') {
+          await finishLoginAndRedirect(result.createdSessionId);
+        } else {
+          openModalStep(stepCompleteSignup);
+          document.getElementById('fullname-input').focus();
+        }
+      } catch (err) {
+        modalError.textContent =
+                (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
+                'Invalid verification code.';
+      }
+    });
+
+    // STEP 2B: Complete Sign-Up (Full Name + Password)
+    document.getElementById('signup-details-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      modalError.textContent = '';
+
+      const fullName = document.getElementById('fullname-input').value.trim();
+      const password = document.getElementById('new-password-input').value;
+      const confirmPassword = document.getElementById('confirm-password-input').value;
+
+      if (password !== confirmPassword) {
+        modalError.textContent = 'Passwords do not match. Please try again.';
+        return;
+      }
+
+      const nameParts = fullName.split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      try {
+        const updatedSignUp = await activeSignUp.update({ firstName, lastName, password });
+        if (updatedSignUp.status === 'complete') {
+          await finishLoginAndRedirect(updatedSignUp.createdSessionId);
+        } else {
+          modalError.textContent = 'Additional verification required: ' + updatedSignUp.status;
+        }
+      } catch (err) {
+        modalError.textContent =
+                (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
+                'Could not create account.';
+      }
+    });
+
+    // STEP 3: Existing User Password Sign-In
+    document.getElementById('existing-password-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      modalError.textContent = '';
+      const password = document.getElementById('existing-password-input').value;
+
+      try {
+        const result = await activeSignIn.attemptFirstFactor({ strategy: 'password', password });
+        if (result.status === 'complete') {
+          await finishLoginAndRedirect(result.createdSessionId);
+        } else {
+          modalError.textContent = 'Sign-in incomplete: ' + result.status;
+        }
+      } catch (err) {
+        modalError.textContent =
+                (err.errors && err.errors[0] && (err.errors[0].longMessage || err.errors[0].message)) ||
+                'Incorrect password.';
+      }
+    });
   });
 </script>
+
+</body>
+</html>
+
 
 
 
