@@ -592,7 +592,18 @@
           const res = await fetch(API_BASE + '/auth/authorize', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ clerk_token: token, code_challenge: desktopReq.challenge })
+            body: JSON.stringify({
+              clerk_token: token,
+              code_challenge: desktopReq.challenge,
+              // Display-only (shown in IronC). Never used for any license decision.
+              email: clerk.user && clerk.user.primaryEmailAddress
+                      ? clerk.user.primaryEmailAddress.emailAddress : '',
+              name: clerk.user
+                      ? (clerk.user.fullName ||
+                              [clerk.user.firstName, clerk.user.lastName].filter(Boolean).join(' ') ||
+                              clerk.user.username || '')
+                      : ''
+            })
           });
           let data = {};
           try { data = await res.json(); } catch (e) { /* non-JSON error */ }
@@ -600,9 +611,9 @@
           if (res.ok && data.code) {
             showNotice('Success! Returning you to IronC... You can close this tab afterwards.', 'ok');
             window.location.replace(
-              'http://127.0.0.1:' + desktopReq.port + '/callback' +
-              '?code=' + encodeURIComponent(data.code) +
-              '&state=' + encodeURIComponent(desktopReq.state)
+                    'http://127.0.0.1:' + desktopReq.port + '/callback' +
+                    '?code=' + encodeURIComponent(data.code) +
+                    '&state=' + encodeURIComponent(desktopReq.state)
             );
             return;
           }
@@ -615,10 +626,13 @@
           } else if (res.status === 401) {
             showNotice('We could not verify your sign-in. Please sign in again.', 'error');
           } else {
-            showNotice('Something went wrong while authorizing IronC. Please try again.', 'error');
+            showNotice('Something went wrong while authorizing IronC (' + res.status +
+                    (data.error ? ': ' + data.error : '') + (data.detail ? ' - ' + data.detail : '') + ').', 'error');
           }
         } catch (err) {
-          showNotice('Could not reach the IronGate license server. Check your connection and try again.', 'error');
+          console.error('IronC authorize failed:', err);
+          showNotice('Could not reach the IronGate license server (' + (err && err.message ? err.message : err) +
+                  '). Check your connection and try again.', 'error');
         }
         switchBtn.classList.add('show');
       }
