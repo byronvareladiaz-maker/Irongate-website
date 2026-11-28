@@ -224,20 +224,11 @@
             border-top: 1px solid #1F1F1F;
         }
         .card-price { font-size: 17px; font-weight: 500; }
-        .btn-add {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 12px;
-            background-color: #FFFFFF;
-            color: #000000;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-        .btn-add:hover { background-color: #E5E5E5; }
-        .btn-add:active { transform: scale(0.98); }
-        .btn-add.added { background-color: #A3E635; }
+        .software-card { color: inherit; text-decoration: none; }
+        a.software-card { cursor: pointer; }
+        a.software-card:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 4px; }
+        .card-link { color: #D1D1D1; font-size: 14px; }
+        @media (max-width: 400px) { .software-grid { grid-template-columns: 1fr; } }
 
         /* Empty state */
         .empty-state {
@@ -303,14 +294,14 @@
 <!-- Top Navigation -->
 <header>
     <div class="nav-left">
-        <a href="/" class="logo">
+        <a href="/public" class="logo">
             <img src="/public/4b81e99c953d4e4f8fb34dd45ff89a4311.png" alt="Irongate Industries" />
         </a>
 
         <nav class="nav-links">
-            <a href="/#about">About us <span>&#8964;</span></a>
-            <a href="/#work">Our Work <span>&#8964;</span></a>
-            <a href="/#updates">Updates <span>&#8964;</span></a>
+            <a href="/public#about">About us <span>&#8964;</span></a>
+            <a href="/public#work">Our Work <span>&#8964;</span></a>
+            <a href="/public#updates">Updates <span>&#8964;</span></a>
 
             <div class="nav-dropdown" id="systems-dropdown">
                 <button type="button" class="nav-dropdown-btn" id="systems-btn" aria-expanded="false">
@@ -400,25 +391,18 @@
            description: 'Real-time test stand telemetry and HIL simulation.',
            specs: 'Windows / Linux • License per seat',   // optional
            logo: '/public/mission-control-logo.png',      // optional (leave '' for a letter)
-           price: 600                              // number, in dollars
+           price: 600,                             // number, in dollars
+            redirect: "/your-page/"                 // destination when card is clicked
          },
        ===================================================================== */
-    const SOFTWARE = [{
-        id: 'ig-sw-axiomeng',
-        name: 'Axiom Engineering Suite',
-        category: 'Software',
-        description: 'Full engineering suite with amounts of compatability no other app has ever attempted to reach.',
-        specs: 'Windows / Linux • License per seat',
-        logo: '/public/axiom.png',
-        price: 0
-    },
+    const SOFTWARE = [
         { id: 'ig-sw-ironc',
         name: 'IronC',
         category: 'Software',
-        description: 'A fast, lightweight C/C++ IDE built specifically you can write, compile, and run code effortlessly.',
+        description: 'A fast, lightweight C/C++ IDE designed to make writing, compiling, and running code effortless.',
         specs: 'Windows / Linux • License per seat',
-        logo: '/public/ironc',
-        price: 0
+        logo: '/public/ironc.png',
+        redirect: '/ironc'
     },
 
     ];
@@ -430,10 +414,7 @@
     function getCart() {
         try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
     }
-    function saveCart(items) {
-        try { localStorage.setItem(CART_KEY, JSON.stringify(items)); } catch (e) {}
-        updatePayloadBadge();
-    }
+
     function updatePayloadBadge() {
         const total = getCart().reduce((sum, item) => sum + (item.qty || 1), 0);
         const badge = document.getElementById('nav-bay-count');
@@ -442,24 +423,7 @@
     window.addEventListener('storage', updatePayloadBadge);
     updatePayloadBadge();
 
-    function addToBay(product) {
-        const cart = getCart();
-        const existing = cart.find((i) => i.id === product.id);
-        if (existing) {
-            existing.qty += 1;
-        } else {
-            cart.push({
-                id: product.id,
-                category: product.category || 'Software',
-                name: product.name,
-                specs: product.specs || product.description || '',
-                massKg: 0,
-                price: Number(product.price) || 0,
-                qty: 1
-            });
-        }
-        saveCart(cart);
-    }
+
 
     // ---- Render ----
     const el = (tag, cls, text) => {
@@ -498,7 +462,16 @@
         const grid = el('div', 'software-grid');
 
         SOFTWARE.forEach((p) => {
-            const card = el('article', 'software-card');
+            // Only allow HTTP(S) destinations. Empty links remain inactive.
+            let destination = null;
+            try {
+                if (p.redirect) {
+                    const url = new URL(p.redirect, window.location.origin);
+                    if (['https:', 'http:'].includes(url.protocol)) destination = url.href;
+                }
+            } catch (e) { /* Invalid destination: keep card inactive. */ }
+            const card = el(destination ? 'a' : 'article', 'software-card');
+            if (destination) card.href = destination;
 
             const top = el('div', 'card-top');
             const logo = el('div', 'card-logo');
@@ -524,18 +497,7 @@
             const bottom = el('div', 'card-bottom');
             bottom.appendChild(el('span', 'card-price', '$' + (Number(p.price) || 0).toLocaleString()));
 
-            const btn = el('button', 'btn-add', 'Add to Payload Bay');
-            btn.type = 'button';
-            btn.addEventListener('click', () => {
-                addToBay(p);
-                btn.textContent = 'Added \u2713';
-                btn.classList.add('added');
-                setTimeout(() => {
-                    btn.textContent = 'Add to Payload Bay';
-                    btn.classList.remove('added');
-                }, 1400);
-            });
-            bottom.appendChild(btn);
+            bottom.appendChild(el('span', 'card-link', destination ? 'View details →' : 'Coming soon'));
 
             card.appendChild(bottom);
             grid.appendChild(card);

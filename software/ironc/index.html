@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IronC Plugin Development | Irongate Industries</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Top Navigation Bar --- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            font-size: 14px;
+            border-bottom: 1px solid #1C1C1C;
+        }
+        .nav-left { display: flex; align-items: center; gap: 36px; }
+        .logo img { height: 36px; width: auto; display: block; }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a {
+            color: #D1D1D1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #FFFFFF; }
+
+        .nav-dropdown { position: relative; display: inline-block; }
+        .nav-dropdown-btn {
+            background: none;
+            border: none;
+            color: #D1D1D1;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+        .nav-dropdown-btn:hover,
+        .nav-dropdown.open .nav-dropdown-btn { color: #FFFFFF; }
+        .nav-dropdown-btn .chevron { transition: transform 0.2s ease; display: inline-block; }
+        .nav-dropdown.open .chevron { transform: rotate(180deg); }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 0;
+            min-width: 170px;
+            background-color: #111111;
+            border: 1px solid #2E2E2E;
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75);
+            z-index: 100;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .nav-dropdown.open .dropdown-menu { display: flex; }
+        .dropdown-menu a {
+            color: #D1D1D1;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: block;
+            transition: background-color 0.15s, color 0.15s;
+        }
+        .dropdown-menu a:hover { background-color: #1F1F1F; color: #FFFFFF; }
+        .dropdown-menu a.current { color: #FFFFFF; background-color: #1A1A1A; }
+
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .nav-right a,
+        .icon-btn {
+            color: #D1D1D1;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .nav-right a:hover,
+        .icon-btn:hover { color: #FFFFFF; }
+
+        /* --- Custom user menu --- */
+        .user-menu { position: relative; }
+        .user-btn {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: #1F1F1F;
+            border: 1px solid #3A3A3A;
+            color: #D1D1D1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .user-btn:hover, .user-menu.open .user-btn { border-color: #777; color: #FFF; }
+        .user-pop {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 12px);
+            width: 290px;
+            background: #111111;
+            border: 1px solid #2E2E2E;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75);
+            z-index: 100;
+        }
+        .user-menu.open .user-pop { display: block; }
+        .user-name { font-size: 15px; font-weight: 600; color: #FFF; }
+        .user-email { font-size: 13px; color: #9A9A9A; margin-top: 2px; word-break: break-all; }
+        .user-divider { height: 1px; background: #2E2E2E; margin: 12px 0; }
+        .user-label { font-size: 12px; color: #7A7A7A; margin-bottom: 6px; }
+        .user-action {
+            width: 100%;
+            display: block;
+            text-align: left;
+            background: none;
+            border: none;
+            color: #D1D1D1;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 9px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.15s, color 0.15s;
+        }
+        .user-action:hover { background: #1F1F1F; color: #FFF; }
+        .user-action.primary { background: #FFF; color: #000; font-weight: 600; text-align: center; }
+        .user-action.primary:hover { background: #E5E5E5; color: #000; }
+        .user-action small { display: block; color: #7A7A7A; font-size: 12px; }
+
+        /* --- Page content --- */
+        main {
+            flex: 1;
+            max-width: 1240px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 56px 40px 80px;
+        }
+
+        .page-header { margin-bottom: 40px; }
+        .page-header h1 {
+            font-size: 40px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+        .page-subtitle { color: #888888; font-size: 15px; margin-top: 8px; max-width: 620px; line-height: 1.5; }
+
+        /* Software grid */
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .software-card {
+            background-color: #0D0D0D;
+            border: 1px solid #262626;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+        .software-card:hover { border-color: #3E3E3E; transform: translateY(-2px); }
+
+        .card-top { display: flex; align-items: center; gap: 16px; }
+        .card-logo {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background-color: #161616;
+            border: 1px solid #2A2A2A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-size: 22px;
+            font-weight: 600;
+            color: #D1D1D1;
+        }
+        .card-logo img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+        .card-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #888888;
+        }
+        .card-name { font-size: 18px; font-weight: 500; margin-top: 3px; }
+        .card-desc { font-size: 14px; color: #B0B0B0; line-height: 1.5; }
+        .card-specs { font-size: 13px; color: #8A8A8A; }
+
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #1F1F1F;
+        }
+        .card-price { font-size: 17px; font-weight: 500; }
+        .btn-add {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 12px;
+            background-color: #FFFFFF;
+            color: #000000;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-add:hover { background-color: #E5E5E5; }
+        .btn-add:active { transform: scale(0.98); }
+        .btn-add.added { background-color: #A3E635; }
+
+        /* Empty state */
+        .empty-state {
+            background-color: #0D0D0D;
+            border: 1px dashed #2E2E2E;
+            border-radius: 20px;
+            padding: 80px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background-color: #141414;
+            border: 1px solid #2A2A2A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7A7A7A;
+        }
+        .empty-state h2 { font-size: 24px; font-weight: 500; }
+        .empty-state p { color: #888888; font-size: 14px; max-width: 400px; line-height: 1.5; }
+        .btn-outline {
+            padding: 11px 20px;
+            border: 1px solid #3A3A3A;
+            border-radius: 12px;
+            background-color: #141414;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 14px;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        .btn-outline:hover { border-color: #666666; background-color: #1F1F1F; }
+
+        /* Footer */
+        footer {
+            padding: 24px 40px;
+            border-top: 1px solid #1C1C1C;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #7A7A7A;
+        }
+        footer a { color: #A0A0A0; text-decoration: none; margin-left: 20px; }
+        footer a:hover { color: #FFFFFF; }
+
+        @media (max-width: 960px) {
+            header { padding: 16px 20px; }
+            .nav-links { display: none; }
+            main { padding: 36px 20px 60px; }
+            .page-header h1 { font-size: 32px; }
+            footer { flex-direction: column; gap: 12px; }
+        }
+        .announcement-label { color: #888; font-size: 13px; margin-bottom: 18px; }
+        .page-header { margin-top: 48px; margin-bottom: 28px; }
+        .page-subtitle { max-width: 720px; color: #B0B0B0; font-size: 17px; line-height: 1.7; margin-top: 20px; }
+        .announcement-status { display: inline-block; border: 1px solid #2E2E2E; border-radius: 12px; padding: 12px 18px; color: #D1D1D1; background: #0D0D0D; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<header>
+    <div class="nav-left">
+        <a href="/public" class="logo">
+            <img src="/public/4b81e99c953d4e4f8fb34dd45ff89a4311.png" alt="Irongate Industries" />
+        </a>
+
+        <nav class="nav-links">
+            <a href="/public#about">About us <span>&#8964;</span></a>
+            <a href="/public#work">Our Work <span>&#8964;</span></a>
+            <a href="/public#updates">Updates <span>&#8964;</span></a>
+
+            <div class="nav-dropdown" id="systems-dropdown">
+                <button type="button" class="nav-dropdown-btn" id="systems-btn" aria-expanded="false">
+                    Systems <span class="chevron">&#8964;</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/software" class="current">Software</a>
+                    <a href="/hardware">Hardware</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="nav-right">
+        <button class="icon-btn" aria-label="Search" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </button>
+
+        <a href="/payload">
+            Payload Bay<span id="nav-bay-count"></span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+            </svg>
+        </a>
+
+        <div id="auth-nav-slot">
+            <a href="/signin/index.html">Sign In</a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <div class="page-header">
+        <p class="announcement-label">IronC / Developer platform</p>
+        <h1 id="announcement-title"></h1>
+        <p class="page-subtitle" id="announcement-description"></p>
+    </div>
+    <div class="announcement-status" id="announcement-status"></div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <span>&copy; 2026 Irongate Industries. All rights reserved.</span>
+    <div>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+    </div>
+</footer>
+
+<!-- Clerk needs TWO scripts, both served from your Clerk Frontend API domain -->
+<script
+        defer
+        crossorigin="anonymous"
+        src="https://clerk.irongateindustries.com/npm/@clerk/ui@1/dist/ui.browser.js"
+        type="text/javascript">
+</script>
+<script
+        defer
+        crossorigin="anonymous"
+        data-clerk-publishable-key="pk_live_Y2xlcmsuaXJvbmdhdGVpbmR1c3RyaWVzLmNvbSQ"
+        src="https://clerk.irongateindustries.com/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+        type="text/javascript">
+</script>
+
+<script>
+    /* EDIT THIS SECTION TO CHANGE THE ANNOUNCEMENT */
+    const ANNOUNCEMENT = {
+        title: 'IronC',
+        status: 'Plugin opening · Early 2027',
+        description: 'IronC is currently undergoing testing and refinement ahead of the public launch of its plugin ecosystem. Public plugin development is planned to open in early 2027, giving independent developers the opportunity to build and publish extensions for IronC. Further details on the Plugin SDK and Marketplace will be announced closer to launch.'
+    };
+    document.getElementById('announcement-status').textContent = ANNOUNCEMENT.status;
+    document.getElementById('announcement-title').textContent = ANNOUNCEMENT.title;
+    document.getElementById('announcement-description').textContent = ANNOUNCEMENT.description;
+
+    // ---- Payload Bay badge (read only) ----
+    function updatePayloadBadge() {
+        try {
+            const cart = JSON.parse(localStorage.getItem('irongate_payload_bay')) || [];
+            const total = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            document.getElementById('nav-bay-count').textContent = total > 0 ? ` (${total})` : '';
+        } catch (e) {}
+    }
+    updatePayloadBadge();
+    window.addEventListener('storage', updatePayloadBadge);
+    const el = (tag, cls, text) => {
+        const node = document.createElement(tag);
+        if (cls) node.className = cls;
+        if (text) node.textContent = text;
+        return node;
+    };
+
+    // ---- Systems dropdown ----
+    (function () {
+        const dd = document.getElementById('systems-dropdown');
+        const btn = document.getElementById('systems-btn');
+        if (!dd || !btn) return;
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = dd.classList.toggle('open');
+            btn.setAttribute('aria-expanded', String(open));
+        });
+        document.addEventListener('click', (e) => {
+            if (!dd.contains(e.target)) {
+                dd.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    })();
+
+    // ---- Clerk: swap "Sign In" for the account menu when signed in ----
+    window.addEventListener('load', async function () {
+        let tries = 0;
+        while (!window.Clerk && tries < 50) {
+            await new Promise((r) => setTimeout(r, 100));
+            tries++;
+        }
+        if (!window.Clerk) return;
+
+        try {
+            await window.Clerk.load({ ui: { ClerkUI: window.__internal_ClerkUICtor } });
+        } catch (err) {
+            console.error('Clerk failed to load:', err);
+            return;
+        }
+
+        const user = window.Clerk.user;
+        if (!user) return; // keep the plain "Sign In" link
+
+        const email = (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress) || '';
+        const name = user.fullName || email;
+
+        // Remember accounts used on this browser (name + email only, never passwords)
+        const KEY = 'irongate_known_accounts';
+        const readKnown = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
+        const writeKnown = (list) => { try { localStorage.setItem(KEY, JSON.stringify(list.slice(0, 5))); } catch (e) {} };
+
+        const others = readKnown().filter((a) => a.email && a.email !== email);
+        writeKnown([{ email, name }, ...others]);
+
+        const menu = el('div', 'user-menu');
+
+        const btn = el('button', 'user-btn');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', 'Account menu');
+        btn.innerHTML =
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">' +
+            '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>';
+
+        const pop = el('div', 'user-pop');
+        pop.appendChild(el('div', 'user-name', name));
+        pop.appendChild(el('div', 'user-email', email));
+        pop.appendChild(el('div', 'user-divider'));
+
+        async function switchTo(targetEmail) {
+            const url = '/signin/index.html' + (targetEmail ? '?email=' + encodeURIComponent(targetEmail) : '');
+            try { await window.Clerk.signOut({ redirectUrl: url }); }
+            catch (e) { window.location.href = url; }
+        }
+
+        if (others.length) {
+            pop.appendChild(el('div', 'user-label', 'Recent accounts'));
+            others.forEach((acct) => {
+                const row = el('button', 'user-action');
+                row.type = 'button';
+                row.appendChild(document.createTextNode(acct.name || acct.email));
+                row.appendChild(el('small', '', acct.email));
+                row.addEventListener('click', () => switchTo(acct.email));
+                pop.appendChild(row);
+            });
+            pop.appendChild(el('div', 'user-divider'));
+        }
+
+        const switchBtn = el('button', 'user-action primary', 'Switch account');
+        switchBtn.type = 'button';
+        switchBtn.addEventListener('click', () => switchTo(''));
+        pop.appendChild(switchBtn);
+
+        const outBtn = el('button', 'user-action', 'Sign out');
+        outBtn.type = 'button';
+        outBtn.style.marginTop = '6px';
+        outBtn.addEventListener('click', async () => {
+            try { await window.Clerk.signOut({ redirectUrl: '/' }); } catch (e) { window.location.href = '/'; }
+        });
+        pop.appendChild(outBtn);
+
+        menu.appendChild(btn);
+        menu.appendChild(pop);
+
+        const slot = document.getElementById('auth-nav-slot');
+        slot.textContent = '';
+        slot.appendChild(menu);
+
+        btn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('open'); });
+        document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.remove('open'); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') menu.classList.remove('open'); });
+    });
+</script>
+
+</body>
+</html>
