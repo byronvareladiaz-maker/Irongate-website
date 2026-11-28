@@ -451,6 +451,15 @@
 <script>
   (function () {
     const $ = (id) => document.getElementById(id);
+    const params = new URLSearchParams(window.location.search);
+
+    const app = params.get('app');
+
+    const RETURN_URL = app === 'pluggate'
+
+            ? 'https://plugins.irongateindustries.com/'
+
+            : 'https://irongateindustries.com/';
 
     // ---- Systems dropdown ----
     const systemsDropdown = $('systems-dropdown');
@@ -524,9 +533,12 @@
       }
 
       // Already signed in -> go home
-      if (clerk.user) {
-        window.location.href = '/';
+      if (clerk.user && clerk.session) {
+
+        window.location.replace(RETURN_URL);
+
         return;
+
       }
 
       let activeSignIn = null;
@@ -552,25 +564,68 @@
       }
 
       async function finishLogin(sessionId) {
-        await clerk.setActive({ session: sessionId });
+
+        if (!sessionId) {
+
+          throw new Error('Missing authentication session.');
+
+        }
+
+        await clerk.setActive({
+
+          session: sessionId
+
+        });
+
+        if (!clerk.user || !clerk.session) {
+
+          throw new Error('Additional authentication required.');
+
+        }
+
         closeModal();
-        window.location.href = '/';
+
+        window.location.replace(RETURN_URL);
+
       }
 
       // ---- OAuth buttons ----
       function oauth(strategy) {
+
         return async () => {
+
           setStatus('');
+
           try {
+
             await clerk.client.signIn.authenticateWithRedirect({
+
               strategy,
-              redirectUrl: '/sso-callback.html',
-              redirectUrlComplete: '/'
+
+              redirectUrl:
+
+                      'https://irongateindustries.com/sso-callback.html',
+
+              redirectUrlComplete:
+
+              RETURN_URL
+
             });
+
           } catch (err) {
-            setStatus(errMsg(err, 'Could not start sign-in.'), true);
+
+            setStatus(
+
+                    errMsg(err, 'Could not start sign-in.'),
+
+                    true
+
+            );
+
           }
+
         };
+
       }
       $('google-btn').addEventListener('click', oauth('oauth_google'));
       $('microsoft-btn').addEventListener('click', oauth('oauth_microsoft'));
