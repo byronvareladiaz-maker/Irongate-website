@@ -451,15 +451,7 @@
 <script>
   (function () {
     const $ = (id) => document.getElementById(id);
-    const params = new URLSearchParams(window.location.search);
-
-    const app = params.get('app');
-
-    const RETURN_URL = app === 'pluggate'
-
-            ? 'https://plugins.irongateindustries.com/'
-
-            : 'https://irongateindustries.com/';
+    const returnHome = new URLSearchParams(location.search).get("app") === "pluggate" ? "https://plugins.irongateindustries.com/repo/" : "/";
 
     // ---- Systems dropdown ----
     const systemsDropdown = $('systems-dropdown');
@@ -533,12 +525,9 @@
       }
 
       // Already signed in -> go home
-      if (clerk.user && clerk.session) {
-
-        window.location.replace(RETURN_URL);
-
+      if (clerk.user) {
+        window.location.href = returnHome;
         return;
-
       }
 
       let activeSignIn = null;
@@ -564,68 +553,25 @@
       }
 
       async function finishLogin(sessionId) {
-
-        if (!sessionId) {
-
-          throw new Error('Missing authentication session.');
-
-        }
-
-        await clerk.setActive({
-
-          session: sessionId
-
-        });
-
-        if (!clerk.user || !clerk.session) {
-
-          throw new Error('Additional authentication required.');
-
-        }
-
+        await clerk.setActive({ session: sessionId });
         closeModal();
-
-        window.location.replace(RETURN_URL);
-
+        window.location.href = returnHome;
       }
 
       // ---- OAuth buttons ----
       function oauth(strategy) {
-
         return async () => {
-
           setStatus('');
-
           try {
-
             await clerk.client.signIn.authenticateWithRedirect({
-
               strategy,
-
-              redirectUrl:
-
-                      'https://irongateindustries.com/sso-callback.html',
-
-              redirectUrlComplete:
-
-              RETURN_URL
-
+              redirectUrl: '/sso-callback.html',
+              redirectUrlComplete: returnHome
             });
-
           } catch (err) {
-
-            setStatus(
-
-                    errMsg(err, 'Could not start sign-in.'),
-
-                    true
-
-            );
-
+            setStatus(errMsg(err, 'Could not start sign-in.'), true);
           }
-
         };
-
       }
       $('google-btn').addEventListener('click', oauth('oauth_google'));
       $('microsoft-btn').addEventListener('click', oauth('oauth_microsoft'));
